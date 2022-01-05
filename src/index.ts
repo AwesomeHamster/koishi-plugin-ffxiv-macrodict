@@ -82,7 +82,7 @@ export async function apply(ctx: Context, _config: MacroDictConfig): Promise<voi
         ],
       }, [`Command_${lang}`, `Description_${lang}`, "id"]);
 
-      const puppeteer = ctx.app?.puppeteer;
+      const puppeteer = ctx.puppeteer;
 
       if (!puppeteer) {
         return template("macrodict.not_found_puppeteer");
