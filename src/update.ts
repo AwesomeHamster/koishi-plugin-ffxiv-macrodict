@@ -1,6 +1,6 @@
 import { parseStream } from "@fast-csv/parse";
 import { AxiosInstance } from "axios";
-import { Context, Logger } from "koishi-core";
+import { Context, Logger } from "koishi";
 
 import type {} from "./index";
 
@@ -40,7 +40,7 @@ export async function updateMacros(axios: AxiosInstance, ctx: Context): Promise<
   }
   for (const [id, data] of Object.entries(macros)) {
     if ((await ctx.database.get("macrodict", id)).length >= 1) {
-      await ctx.database.update("macrodict", [data], "id");
+      await ctx.database.upsert("macrodict", [data], "id");
     } else {
       await ctx.database.create("macrodict", data);
     }

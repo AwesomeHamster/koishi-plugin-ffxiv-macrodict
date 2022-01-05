@@ -1,12 +1,12 @@
 import Axios from "axios";
-import { Context, Tables, template } from "koishi-core";
+import { Context, Tables, template } from "koishi";
 
 import { MacroDictConfig } from "./config";
 import { renderMacroView } from "./render";
 import macrodictTemplates from "./template";
 import { updateMacros } from "./update";
 
-declare module "koishi-core" {
+declare module "koishi" {
   interface Tables {
     macrodict: MacroDictDatabase;
   }
@@ -25,22 +25,23 @@ export type MacroDictDatabase =
 
 export const name = "macrodict";
 
+// only allow when database available
+export const using = ["database"];
+
 export async function apply(ctx: Context, _config: MacroDictConfig): Promise<void> {
-  // only allow when database available
-  ctx = ctx.select("database");
+
 
   // set database
-  Tables.extend("macrodict", {
+  ctx.model.extend("macrodict", {
+    id: "unsigned",
+    lastUpdated: "integer",
+    ...localizedKeys("Command", "string"),
+    ...localizedKeys("ShortCommand", "string"),
+    ...localizedKeys("Alias", "string"),
+    ...localizedKeys("ShortAlias", "string"),
+    ...localizedKeys("Description", "string"),
+  }, {
     primary: "id",
-    fields:{
-      id: "unsigned",
-      lastUpdated: "integer",
-      ...localizedKeys("Command", "string"),
-      ...localizedKeys("ShortCommand", "string"),
-      ...localizedKeys("Alias", "string"),
-      ...localizedKeys("ShortAlias", "string"),
-      ...localizedKeys("Description", "string"),
-    },
   });
 
   const config = {

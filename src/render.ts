@@ -1,11 +1,11 @@
-import { segment, template } from "koishi-core";
+import { segment, template } from "koishi";
 import path from "path";
 
 import pug from "pug";
 
 import { parseMacroDescriptionForHtml } from "./parser";
 
-import { Puppeteer } from "koishi-plugin-puppeteer";
+import { Puppeteer } from "@koishijs/plugin-puppeteer";
 
 /**
  * Render the macro definition text to HTML-based image.
