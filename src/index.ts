@@ -98,7 +98,7 @@ export async function apply(ctx: Context, _config: MacroDictConfig): Promise<voi
     });
 
   // update macro database when bot connected successfully.
-  ctx.on("connect", () => updateMacros(axios, ctx));
+  ctx.on("ready", () => updateMacros(axios, ctx));
   ctx
     .command("macrodict.update")
     .action(({ session }) => {
