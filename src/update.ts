@@ -39,7 +39,7 @@ export async function updateMacros(axios: AxiosInstance, ctx: Context): Promise<
     }
   }
   for (const [id, data] of Object.entries(macros)) {
-    if ((await ctx.database.get("macrodict", id)).length >= 1) {
+    if ((await ctx.database.get("macrodict", Number(id))).length >= 1) {
       await ctx.database.upsert("macrodict", [data]);
     } else {
       await ctx.database.create("macrodict", data);

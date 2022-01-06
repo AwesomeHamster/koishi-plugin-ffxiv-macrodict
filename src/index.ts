@@ -70,8 +70,8 @@ export async function apply(ctx: Context, _config: MacroDictConfig): Promise<voi
       }
       macro = macro.startsWith("/") ? macro : "/" + macro;
       const db = await ctx.database.get("macrodict", {
-        [`Command_${lang}`]: { $eq: macro },
         $or: [
+          { [`Command_${lang}`]: { $eq: macro } },
           { [`ShortCommand_${lang}`]: { $eq: macro } },
           { [`Alias_${lang}`]: { $eq: macro } },
           { [`ShortAlias_${lang}`]: { $eq: macro } },
