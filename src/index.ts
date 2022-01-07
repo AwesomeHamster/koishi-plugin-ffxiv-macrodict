@@ -97,7 +97,7 @@ export async function apply(ctx: Context, _config: MacroDictConfig): Promise<voi
   }
 
   ctx
-    .command("macrodict.update")
+    .command("macrodict.update", template("macrodict.update_description"))
     .action(({ session }) => {
       session?.sendQueued(template("macrodict.start_updating_macros"));
       updateMacros(ctx);
