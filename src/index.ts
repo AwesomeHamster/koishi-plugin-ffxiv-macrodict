@@ -1,5 +1,4 @@
-import Axios from "axios";
-import { Context, Tables, template } from "koishi";
+import { Context, template } from "koishi";
 
 import { MacroDictConfig } from "./config";
 import { renderMacroView } from "./render";
@@ -29,8 +28,6 @@ export const name = "macrodict";
 export const using = ["database"];
 
 export async function apply(ctx: Context, _config: MacroDictConfig): Promise<void> {
-
-
   // set database
   ctx.model.extend("macrodict", {
     id: "unsigned",
@@ -49,9 +46,6 @@ export async function apply(ctx: Context, _config: MacroDictConfig): Promise<voi
     axiosConfig: {},
     ..._config,
   };
-
-  // initialize axios for HTTP requesting
-  const axios = Axios.create(config.axiosConfig);
 
   template.set("macrodict", macrodictTemplates);
   if (config.template) {
@@ -98,12 +92,12 @@ export async function apply(ctx: Context, _config: MacroDictConfig): Promise<voi
     });
 
   // update macro database when bot connected successfully.
-  ctx.on("ready", () => updateMacros(axios, ctx));
+  ctx.on("ready", () => updateMacros(ctx));
   ctx
     .command("macrodict.update")
     .action(({ session }) => {
       session?.sendQueued(template("macrodict.start_updating_macros"));
-      updateMacros(axios, ctx);
+      updateMacros(ctx);
     });
 }
 

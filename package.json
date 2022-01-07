@@ -50,7 +50,6 @@
   },
   "dependencies": {
     "@fast-csv/parse": "^4.3.6",
-    "axios": "^0.24.0",
     "pug": "^3.0.2"
   }
 }
