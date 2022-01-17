@@ -5,7 +5,7 @@ import pug from "pug";
 
 import { parseMacroDescriptionForHtml } from "./parser";
 
-import { Puppeteer } from "@koishijs/plugin-puppeteer";
+import Puppeteer from "@koishijs/plugin-puppeteer";
 
 /**
  * Render the macro definition text to HTML-based image.
