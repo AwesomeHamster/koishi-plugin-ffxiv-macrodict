@@ -8,9 +8,17 @@ export type MacroDictDatabase = Record<
   lastUpdated: number
 }
 
+export interface MacroDictDatabaseConfig {
+  imageMode?: boolean
+}
+
 declare module 'koishi' {
   interface Tables {
     macrodict: MacroDictDatabase
+  }
+
+  interface Channel {
+    macrodict?: MacroDictDatabaseConfig
   }
 
   namespace Context {

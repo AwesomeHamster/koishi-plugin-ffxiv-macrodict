@@ -8,6 +8,8 @@ commands:
 
     options:
       lang: 指定输出的语言
+      imageMode: 输出为图片模式
+      textMode: 输出为文本模式
 
     messages:
       database_error: '数据库发生错误，无法搜索到宏指令。'
@@ -17,6 +19,25 @@ commands:
       not_found_macro: '找不到宏指令。'
       puppeteer_error: 'koishi-plugin-puppeteer 插件发生错误，无法渲染宏指令。\n{0}'
       hint: '你想找的是 {0} 吗？'
+      about: |
+        由 koishi-plugin-ffxiv-macrodict 生成
+        作者: 迷子 (@Maiko Tan)
+      about_html: |
+        <p>由
+          <code>koishi-plugin-ffxiv-macrodict</code>
+        生成</p>
+        <p>作者: 迷子 (@Maiko Tan)</p>
+      format: |
+        {name}
+        ======
+
+        {description}
+        -----
+        {about}
+
+      setting:
+        image_mode: '已切换到图片模式'
+        text_mode: '已切换到文本模式'
 
   macrodict.update:
     description: 更新宏学词典

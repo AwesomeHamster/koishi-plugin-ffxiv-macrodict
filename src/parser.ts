@@ -14,7 +14,11 @@ const keyMap: { [k: string]: string } = {
 /**
  * Parse a macro definition text for HTML.
  */
-export function parseMacroDescriptionForHtml(description: string): string {
+export function parseMacroDescription(
+  description: string,
+  format: 'html' | 'text' = 'html',
+): string {
+  const renderer = new Renderer(format)
   let index = 0
   let result = ''
   while (index < description.length) {
@@ -42,7 +46,7 @@ export function parseMacroDescriptionForHtml(description: string): string {
       if (!m) {
         throw new Error('parse error')
       }
-      result += Renderer.span(m[1], 'highlight')
+      result += renderer.span(m[1], 'highlight')
       index += m[0].length
     } else if (/^<Gui\((\d+)\)\/>/.test(sub)) {
       // replace <Gui(x)/> to corresponding keys
@@ -50,7 +54,7 @@ export function parseMacroDescriptionForHtml(description: string): string {
       if (!m) {
         throw new Error('parse error')
       }
-      result += Renderer.kbd(keyMap[m[1]] || m[1])
+      result += renderer.kbd(keyMap[m[1]] || m[1])
       index += m[0].length
     } else if (/^<(\w+)>/.test(sub)) {
       const m = /^<(\w+)>/.exec(sub)
@@ -60,7 +64,7 @@ export function parseMacroDescriptionForHtml(description: string): string {
       result += `&lt;${m[1]}&gt;`
       index += m[0].length
     } else if (/^\n/.test(sub)) {
-      result += Renderer.br()
+      result += renderer.br()
       index += 1
     } else {
       result += description[index]
@@ -72,19 +76,31 @@ export function parseMacroDescriptionForHtml(description: string): string {
 }
 
 class Renderer {
-  static p(text: string, className?: string): string {
-    return `<p${className ? ` class="${className}"` : ''}>${text}</p>`
+  html: boolean
+
+  constructor(format: 'html' | 'text') {
+    this.html = format === 'html'
   }
 
-  static span(text: string, className?: string): string {
-    return `<span${className ? ` class="${className}"` : ''}>${text}</span>`
+  p(text: string, className?: string): string {
+    return this.html
+      ? `<p${className ? ` class="${className}"` : ''}>${text}</p>`
+      : `${text}\n`
   }
 
-  static kbd(text: string, className?: string): string {
-    return `<kbd${className ? ` class="${className}"` : ''}>${text}</kbd>`
+  span(text: string, className?: string): string {
+    return this.html
+      ? `<span${className ? ` class="${className}"` : ''}>${text}</span>`
+      : ` ${text} `
   }
 
-  static br(): string {
-    return '<br>'
+  kbd(text: string, className?: string): string {
+    return this.html
+      ? `<kbd${className ? ` class="${className}"` : ''}>${text}</kbd>`
+      : `[${text}]`
+  }
+
+  br(): string {
+    return this.html ? '<br>' : '\n'
   }
 }

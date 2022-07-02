@@ -2,6 +2,7 @@ import { Context } from 'koishi'
 
 import { Config } from './config'
 import i18n from './i18n'
+import { parseMacroDescription } from './parser'
 import { Search } from './search'
 import { Updater } from './update'
 import { commandPrefix, Locale, locales, localizeKeys } from './utils'
@@ -33,9 +34,14 @@ export async function apply(ctx: Context, _config: Config): Promise<void> {
     },
   )
 
+  ctx.model.extend('channel', {
+    macrodict: { type: 'json', initial: {} },
+  })
+
   const config: Required<Config> = {
     aliases: [],
     defaultLanguage: 'en',
+    defaultMode: ctx.puppeteer ? 'image' : 'text',
     fetchOnStart: false,
     ..._config,
   }
@@ -49,6 +55,7 @@ export async function apply(ctx: Context, _config: Config): Promise<void> {
   ctx
     .command('macrodict <macro>')
     .alias(...config.aliases)
+    .channelFields(['macrodict'])
     .option('lang', '-l <language:string>')
     .action(async ({ session, options }, macro) => {
       let lang = (options?.lang as Locale) ?? config.defaultLanguage
@@ -67,6 +74,32 @@ export async function apply(ctx: Context, _config: Config): Promise<void> {
       if (db.exactly) {
         session?.text('.hint', [db.name])
       }
-      return await ctx.macrodict.render(db)
+      const imageMode = session?.channel?.macrodict?.imageMode
+      if (!imageMode) {
+        return session?.text('.format', {
+          name: db.name,
+          description: parseMacroDescription(db.description, 'text'),
+          about: session?.text('.about'),
+        })
+      }
+      return await ctx.macrodict.render(db, session?.text('.about'))
     })
+
+  ctx.using(['puppeteer'], (ctx) => {
+    ctx.command('macrodict', { patch: true })
+      .channelFields(['macrodict'])
+      .option('imageMode', '-i')
+      .option('textMode', '-t')
+      .action(({ options, session }) => {
+        if (session?.channel?.macrodict) {
+          if (options?.imageMode) {
+            session.channel.macrodict.imageMode = true
+            return session?.text('.setting.image_mode')
+          } else if (options?.textMode) {
+            session.channel.macrodict.imageMode = false
+            return session?.text('.setting.text_mode')
+          }
+        }
+      }, true)
+  })
 }
