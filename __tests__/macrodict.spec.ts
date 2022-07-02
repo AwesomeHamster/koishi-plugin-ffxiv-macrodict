@@ -73,4 +73,10 @@ describe('macrodict', () => {
         .and.equal(102, 'id should be 102')
     })
   })
+
+  describe('render', () => {
+    it('should render macro in text', async () => {
+      client.shouldReply('macrodict say -l en', /Send a message to all PCs within a small radius\./)
+    })
+  })
 })
