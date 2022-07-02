@@ -8,6 +8,8 @@ commands:
 
     options:
       lang: 指定输出的语言
+      imageMode: 输出为图片模式
+      textMode: 输出为文本模式
 
     messages:
       database_error: '数据库发生错误，无法搜索到宏指令。'
