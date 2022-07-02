@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { App } from 'koishi'
 import mock from '@koishijs/plugin-mock'
-import * as memory from '@koishijs/plugin-database-memory'
+import memory from '@koishijs/plugin-database-memory'
 
 import { Updater } from '../src/update'
 import * as macrodict from '../src'
@@ -76,7 +76,10 @@ describe('macrodict', () => {
 
   describe('render', () => {
     it('should render macro in text', async () => {
-      client.shouldReply('macrodict say -l en', /Send a message to all PCs within a small radius\./)
+      client.shouldReply(
+        'macrodict say -l en',
+        /Send a message to all PCs within a small radius\./,
+      )
     })
   })
 })

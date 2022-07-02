@@ -86,7 +86,8 @@ export async function apply(ctx: Context, _config: Config): Promise<void> {
     })
 
   ctx.using(['puppeteer'], (ctx) => {
-    ctx.command('macrodict', { patch: true })
+    ctx
+      .command('macrodict', { patch: true })
       .channelFields(['macrodict'])
       .option('imageMode', '-i')
       .option('textMode', '-t')
