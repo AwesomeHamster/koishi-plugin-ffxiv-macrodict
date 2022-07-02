@@ -4,7 +4,7 @@ import type {} from '@koishijs/plugin-puppeteer'
 import { closest } from 'fastest-levenshtein'
 import { Context, Service, segment } from 'koishi'
 
-import { parseMacroDescriptionForHtml } from './parser'
+import { parseMacroDescription } from './parser'
 import { Locale, commandPrefixKeys, locales } from './utils'
 
 interface MacroWithoutDescription {
@@ -125,7 +125,7 @@ export class Search extends Service {
     }
 
     const { name, description } = macro
-    const descriptionHtml = parseMacroDescriptionForHtml(description)
+    const descriptionHtml = parseMacroDescription(description)
 
     const page = await puppeteer.page()
 
