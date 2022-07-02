@@ -22,6 +22,11 @@ commands:
       about: |
         由 koishi-plugin-ffxiv-macrodict 生成
         作者: 迷子 (@Maiko Tan)
+      about_html: |
+        <p>由
+          <code>koishi-plugin-ffxiv-macrodict</code>
+        生成</p>
+        <p>作者: 迷子 (@Maiko Tan)</p>
       format: |
         {name}
         ======

@@ -82,7 +82,7 @@ export async function apply(ctx: Context, _config: Config): Promise<void> {
           about: session?.text('.about'),
         })
       }
-      return await ctx.macrodict.render(db)
+      return await ctx.macrodict.render(db, session?.text('.about'))
     })
 
   ctx.using(['puppeteer'], (ctx) => {

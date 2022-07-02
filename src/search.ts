@@ -117,7 +117,7 @@ export class Search extends Service {
     }
   }
 
-  async render(macro: { name: string; description: string }): Promise<string> {
+  async render(macro: { name: string; description: string }, about: string): Promise<string> {
     const { puppeteer } = this.ctx
 
     if (!puppeteer) {
@@ -132,7 +132,7 @@ export class Search extends Service {
     await page.goto(`file:///${path.resolve(__dirname, '../view/macro.html')}`)
 
     const result = await page.evaluate(
-      (name, description) => {
+      (name, description, about) => {
         let el = document.getElementById('macro-name')
         if (!el) {
           return false
@@ -143,10 +143,16 @@ export class Search extends Service {
           return false
         }
         el.innerHTML = description
+        el = document.getElementById('about')
+        if (!el) {
+          return false
+        }
+        el.innerHTML = about
         return true
       },
       name,
       descriptionHtml,
+      about,
     )
 
     if (!result) {
