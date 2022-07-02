@@ -76,7 +76,11 @@ export async function apply(ctx: Context, _config: Config): Promise<void> {
       }
       const imageMode = session?.channel?.macrodict?.imageMode
       if (!imageMode) {
-        return parseMacroDescription(db.description, 'text')
+        return session?.text('.format', {
+          name: db.name,
+          description: parseMacroDescription(db.description, 'text'),
+          about: session?.text('.about'),
+        })
       }
       return await ctx.macrodict.render(db)
     })
@@ -90,8 +94,10 @@ export async function apply(ctx: Context, _config: Config): Promise<void> {
         if (session?.channel?.macrodict) {
           if (options?.imageMode) {
             session.channel.macrodict.imageMode = true
+            return session?.text('.setting.image_mode')
           } else if (options?.textMode) {
             session.channel.macrodict.imageMode = false
+            return session?.text('.setting.text_mode')
           }
         }
       }, true)
