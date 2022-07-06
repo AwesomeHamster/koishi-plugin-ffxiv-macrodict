@@ -13,3 +13,6 @@ jobs:
           install-peer: >
             koishi
             @koishijs/plugin-puppeteer
+          test: |
+            yarn lint
+            yarn test
