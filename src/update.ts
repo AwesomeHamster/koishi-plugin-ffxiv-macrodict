@@ -23,8 +23,8 @@ export type Fields =
   | 'ShortAlias'
   | 'Description'
 
-export type IntlMacros = Record<
-  `${Fields}_${'en' | 'de' | 'fr' | 'ja'}` | 'ID',
+export type Macros = Record<
+  Fields | 'ID' | 'locale',
   string
 >
 
@@ -86,12 +86,17 @@ export class Updater {
     return ret
   }
 
-  async fetchIntl(): Promise<IntlMacros[]> {
+  async fetchIntl(): Promise<Macros[]> {
+    type IntlMacros = Record<
+      `${Fields}_${'en' | 'de' | 'fr' | 'ja'}` | 'ID',
+      string
+    >
+    const locales = ['en', 'de', 'fr', 'ja'] as const
     const data = await this.fetchXivapi<IntlMacros>(
       'https://xivapi.com/TextCommand',
       [
         'ID',
-        ...['en', 'de', 'fr', 'ja'].reduce<string[]>((arr, loc) => {
+        ...locales.reduce<string[]>((arr, loc) => {
           arr.push(
             `Command_${loc}`,
             `ShortCommand_${loc}`,
@@ -103,10 +108,25 @@ export class Updater {
         }, []),
       ],
     )
-    return data
+    const ret: Macros[] = []
+    for (const macro of data) {
+      locales.forEach((loc) => {
+        ret.push({
+          ID: macro.ID,
+          Command: macro[`Command_${loc}`],
+          ShortCommand: macro[`ShortCommand_${loc}`],
+          Alias: macro[`Alias_${loc}`],
+          ShortAlias: macro[`ShortAlias_${loc}`],
+          Description: macro[`Description_${loc}`],
+          locale: loc,
+        })
+      })
+    }
+
+    return ret
   }
 
-  async fetchCn(): Promise<Record<`${Fields}_chs` | 'ID', string>[]> {
+  async fetchCn(): Promise<Macros[]> {
     const data = await this.fetchXivapi<Record<`${Fields}_chs` | 'ID', string>>(
       'https://cafemaker.wakingsands.com/TextCommand',
       [
@@ -118,10 +138,18 @@ export class Updater {
         'Description_chs',
       ],
     )
-    return data
+    return data.map((macro) => ({
+      ID: macro.ID,
+      Command: macro.Command_chs,
+      ShortCommand: macro.ShortCommand_chs,
+      Alias: macro.Alias_chs,
+      ShortAlias: macro.ShortAlias_chs,
+      Description: macro.Description_chs,
+      locale: 'zh',
+    }))
   }
 
-  async fetchKo(): Promise<Record<`${Fields}_ko` | 'ID', string>[]> {
+  async fetchKo(): Promise<Macros[]> {
     const content = await this.ctx.http.get<NodeJS.ReadableStream>(
       'https://cdn.jsdelivr.net/gh/Ra-Workspace/ffxiv-datamining-ko@master/csv/TextCommand.csv',
       {
@@ -129,9 +157,9 @@ export class Updater {
       },
     )
 
-    const rows = await new Promise<Record<`${Fields}_ko` | 'ID', string>[]>(
+    const rows = await new Promise<Macros[]>(
       (resolve, reject) => {
-        const rows: Record<`${Fields}_ko` | 'ID', string>[] = []
+        const rows: Macros[] = []
         parseStream(content, {
           skipLines: 1,
           ignoreEmpty: false,
@@ -146,11 +174,12 @@ export class Updater {
             if (/^[0-9]+$/.test(row?.['#'])) {
               rows.push({
                 ID: row?.['#'],
-                Alias_ko: row.Alias,
-                Command_ko: row.Command,
-                Description_ko: row.Description,
-                ShortAlias_ko: row.ShortAlias,
-                ShortCommand_ko: row.ShortCommand,
+                Alias: row.Alias,
+                Command: row.Command,
+                Description: row.Description,
+                ShortAlias: row.ShortAlias,
+                ShortCommand: row.ShortCommand,
+                locale: 'ko',
               })
             }
           })

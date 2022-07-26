@@ -67,9 +67,9 @@
   "prettier": "@hamster-bot/prettier-config",
   "devDependencies": {
     "@hamster-bot/constructeur": "*",
-    "@hamster-bot/eslint-config": "^1.0.0",
-    "@hamster-bot/prettier-config": "^1.0.0",
-    "@koishijs/plugin-database-memory": "^1.4.0",
+    "@hamster-bot/eslint-config": "*",
+    "@hamster-bot/prettier-config": "*",
+    "@koishijs/plugin-database-memory": "^1.4.1",
     "@koishijs/plugin-mock": "^2.0.0",
     "@types/chai": "^4.3.1",
     "@types/mocha": "^9.1.0",
