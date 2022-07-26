@@ -55,8 +55,8 @@ describe('macrodict', () => {
 
   describe('search', () => {
     it('should get all names', async () => {
-      const data = await ctx.macrodict.getNames()
-      expect(Object.keys(data.en).length).greaterThan(0)
+      const data = await ctx.macrodict.getNames('en')
+      expect(Object.keys(data).length).greaterThan(0)
     })
     it('should get macro by id', async () => {
       // id 102 is "/say" command

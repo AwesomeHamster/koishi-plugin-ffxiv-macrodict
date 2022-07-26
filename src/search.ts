@@ -5,10 +5,11 @@ import { closest } from 'fastest-levenshtein'
 import { Context, Service, segment } from 'koishi'
 
 import { parseMacroDescription } from './parser'
-import { commandPrefix, Locale, locales } from './utils'
+import { commandPrefix, Locale } from './utils'
 
 interface MacroWithoutDescription {
   id: number
+  locale: Locale
   names: string[]
 }
 interface Macro {
@@ -20,7 +21,7 @@ interface Macro {
 }
 
 export class Search extends Service {
-  macros?: Record<Locale, MacroWithoutDescription[]>
+  macros?: MacroWithoutDescription[]
 
   constructor(ctx: Context) {
     super(ctx, 'macrodict', true)
@@ -31,35 +32,29 @@ export class Search extends Service {
     )
   }
 
-  async getNames(): Promise<Record<Locale, MacroWithoutDescription[]>> {
-    const db = await this.ctx.database.get('macrodict', {}, [
+  async getNames(locale?: Locale): Promise<MacroWithoutDescription[]> {
+    const db = await this.ctx.database.get('macrodict', {
+      locale: { $eq: locale },
+    }, [
       'id',
+      'locale',
       ...commandPrefix,
     ])
 
-    const ret: Record<Locale, MacroWithoutDescription[]> = {
-      en: [],
-      de: [],
-      fr: [],
-      ja: [],
-      zh: [],
-      ko: [],
-    }
+    const ret: MacroWithoutDescription[] = []
 
     for (const row of db) {
-      const { id } = row
+      const { id, locale } = row
 
       // initialize macro metadata container
-      for (const lang of locales) {
-        ret[lang].push({
-          id,
-          names: [],
-        })
-      }
+      ret.push({
+        id,
+        locale: locale as Locale,
+        names: [],
+      })
 
       for (const key of commandPrefix) {
-        const loc = key.substring(key.lastIndexOf('_') + 1) as Locale
-        ret[loc][ret[loc].length - 1].names.push(row[key])
+        ret[ret.length - 1].names.push(row[key])
       }
     }
 
@@ -89,7 +84,7 @@ export class Search extends Service {
 
     const predict = closest(
       name,
-      this.macros[lang].map((macro) => macro.names).flat(),
+      this.macros.map((macro) => macro.names).flat(),
     )
 
     if (!predict) {
@@ -98,7 +93,7 @@ export class Search extends Service {
 
     const exactly = predict === name || predict.substring(1) === name
 
-    const id = this.macros[lang].find(({ names }) =>
+    const id = this.macros.find(({ names }) =>
       names.includes(predict),
     )?.id
 
