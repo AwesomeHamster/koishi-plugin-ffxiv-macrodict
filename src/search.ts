@@ -5,7 +5,7 @@ import { closest } from 'fastest-levenshtein'
 import { Context, Service, segment } from 'koishi'
 
 import { parseMacroDescription } from './parser'
-import { commandPrefix, Locale } from './utils'
+import { commandPrefix, Locale, slashless } from './utils'
 
 interface MacroWithoutDescription {
   id: number
@@ -93,7 +93,7 @@ export class Search extends Service {
       return
     }
 
-    const exactly = predict === name || predict.substring(1) === name
+    const exactly = slashless(predict) === slashless(name)
 
     const id = this.macros.find(({ names }) => names.includes(predict))?.id
 
