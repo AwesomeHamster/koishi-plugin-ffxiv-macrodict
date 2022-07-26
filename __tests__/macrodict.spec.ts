@@ -14,7 +14,7 @@ describe('macrodict', () => {
   app.plugin(macrodict)
 
   const client = app.mock.client('123')
-  const ctx = client.mock.ctx
+  const ctx = client.bot.ctx
   const updater = new Updater(ctx, {})
 
   before(async () => {
