@@ -5,7 +5,7 @@ import i18n from './i18n'
 import { parseMacroDescription } from './parser'
 import { Search } from './search'
 import { Updater } from './update'
-import { commandPrefix, Locale, locales, localizeKeys } from './utils'
+import { commandPrefix, Locale, locales } from './utils'
 
 export { Config }
 
@@ -20,17 +20,17 @@ export async function apply(ctx: Context, _config: Config): Promise<void> {
     'macrodict',
     {
       id: 'unsigned',
+      macroId: 'unsigned',
       lastUpdated: 'integer',
+      locale: 'string',
       ...Object.fromEntries(
         ['Description']
           .concat(commandPrefix)
-          .map((key) => localizeKeys(key, [...locales]))
-          .flat()
-          .map((value) => [value, 'string']),
+          .map((key) => [key, 'string']),
       ),
     },
     {
-      primary: 'id',
+      autoInc: true,
     },
   )
 

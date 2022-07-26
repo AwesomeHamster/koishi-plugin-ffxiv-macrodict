@@ -5,7 +5,7 @@ import { closest } from 'fastest-levenshtein'
 import { Context, Service, segment } from 'koishi'
 
 import { parseMacroDescription } from './parser'
-import { Locale, commandPrefixKeys, locales } from './utils'
+import { commandPrefix, Locale, locales } from './utils'
 
 interface MacroWithoutDescription {
   id: number
@@ -34,7 +34,7 @@ export class Search extends Service {
   async getNames(): Promise<Record<Locale, MacroWithoutDescription[]>> {
     const db = await this.ctx.database.get('macrodict', {}, [
       'id',
-      ...commandPrefixKeys,
+      ...commandPrefix,
     ])
 
     const ret: Record<Locale, MacroWithoutDescription[]> = {
@@ -42,7 +42,7 @@ export class Search extends Service {
       de: [],
       fr: [],
       ja: [],
-      chs: [],
+      zh: [],
       ko: [],
     }
 
@@ -57,7 +57,7 @@ export class Search extends Service {
         })
       }
 
-      for (const key of commandPrefixKeys) {
+      for (const key of commandPrefix) {
         const loc = key.substring(key.lastIndexOf('_') + 1) as Locale
         ret[loc][ret[loc].length - 1].names.push(row[key])
       }
@@ -71,13 +71,14 @@ export class Search extends Service {
       'macrodict',
       {
         id: { $eq: id },
+        locale: { $eq: lang },
       },
-      ['id', `Command_${lang}`, `Description_${lang}`],
+      ['id', 'Command', 'Description'],
     )
     return {
       id: db[0].id,
-      name: db[0][`Command_${lang}`],
-      description: db[0][`Description_${lang}`],
+      name: db[0]['Command'],
+      description: db[0]['Description'],
     }
   }
 
