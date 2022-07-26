@@ -1,11 +1,12 @@
 import { Search } from './search'
 
 export type MacroDictDatabase = Record<
-  LocalizedKeys<CommandPrefix | 'Description'>,
+  CommandPrefix | 'Description' | 'locale',
   string
 > & {
   id: number
   lastUpdated: number
+  macroId: number
 }
 
 export interface MacroDictDatabaseConfig {
@@ -21,10 +22,8 @@ declare module 'koishi' {
     macrodict?: MacroDictDatabaseConfig
   }
 
-  namespace Context {
-    interface Services {
-      macrodict: Search
-    }
+  interface Context {
+    macrodict: Search
   }
 
   interface Events {
@@ -34,7 +33,7 @@ declare module 'koishi' {
   }
 }
 
-export const locales = ['en', 'de', 'fr', 'ja', 'ko', 'chs'] as const
+export const locales = ['en', 'de', 'fr', 'ja', 'ko', 'zh'] as const
 export type Locale = typeof locales[number]
 export const commandPrefix = [
   'Command',
@@ -43,16 +42,3 @@ export const commandPrefix = [
   'ShortAlias',
 ] as const
 export type CommandPrefix = typeof commandPrefix[number]
-export type LocalizedKeys<T extends string> = `${T}_${Locale}`
-
-export function localizeKeys<T extends string>(
-  key: T,
-  loc?: Locale[],
-): LocalizedKeys<T>[] {
-  loc ??= locales as unknown as Locale[]
-  return loc.map((locale) => `${key}_${locale}`) as LocalizedKeys<T>[]
-}
-
-export const commandPrefixKeys = commandPrefix
-  .map((loc) => localizeKeys(loc, ['chs', 'de', 'en', 'fr', 'ja', 'ko']))
-  .flat()

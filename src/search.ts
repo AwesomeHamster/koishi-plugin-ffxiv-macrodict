@@ -5,10 +5,11 @@ import { closest } from 'fastest-levenshtein'
 import { Context, Service, segment } from 'koishi'
 
 import { parseMacroDescription } from './parser'
-import { Locale, commandPrefixKeys, locales } from './utils'
+import { commandPrefix, Locale } from './utils'
 
 interface MacroWithoutDescription {
   id: number
+  locale: Locale
   names: string[]
 }
 interface Macro {
@@ -20,7 +21,7 @@ interface Macro {
 }
 
 export class Search extends Service {
-  macros?: Record<Locale, MacroWithoutDescription[]>
+  macros?: MacroWithoutDescription[]
 
   constructor(ctx: Context) {
     super(ctx, 'macrodict', true)
@@ -31,35 +32,31 @@ export class Search extends Service {
     )
   }
 
-  async getNames(): Promise<Record<Locale, MacroWithoutDescription[]>> {
-    const db = await this.ctx.database.get('macrodict', {}, [
-      'id',
-      ...commandPrefixKeys,
-    ])
+  async getNames(locale?: Locale): Promise<MacroWithoutDescription[]> {
+    const db = await this.ctx.database.get(
+      'macrodict',
+      locale
+        ? {
+            locale: { $eq: locale },
+          }
+        : {},
+      ['macroId', 'locale', ...commandPrefix],
+    )
 
-    const ret: Record<Locale, MacroWithoutDescription[]> = {
-      en: [],
-      de: [],
-      fr: [],
-      ja: [],
-      chs: [],
-      ko: [],
-    }
+    const ret: MacroWithoutDescription[] = []
 
     for (const row of db) {
-      const { id } = row
+      const { macroId, locale } = row
 
       // initialize macro metadata container
-      for (const lang of locales) {
-        ret[lang].push({
-          id,
-          names: [],
-        })
-      }
+      ret.push({
+        id: macroId,
+        locale: locale as Locale,
+        names: [],
+      })
 
-      for (const key of commandPrefixKeys) {
-        const loc = key.substring(key.lastIndexOf('_') + 1) as Locale
-        ret[loc][ret[loc].length - 1].names.push(row[key])
+      for (const key of commandPrefix) {
+        ret[ret.length - 1].names.push(row[key])
       }
     }
 
@@ -70,14 +67,15 @@ export class Search extends Service {
     const db = await this.ctx.database.get(
       'macrodict',
       {
-        id: { $eq: id },
+        macroId: { $eq: id },
+        locale: { $eq: lang },
       },
-      ['id', `Command_${lang}`, `Description_${lang}`],
+      ['macroId', 'Command', 'Description'],
     )
     return {
-      id: db[0].id,
-      name: db[0][`Command_${lang}`],
-      description: db[0][`Description_${lang}`],
+      id: db[0].macroId,
+      name: db[0]['Command'],
+      description: db[0]['Description'],
     }
   }
 
@@ -88,7 +86,7 @@ export class Search extends Service {
 
     const predict = closest(
       name,
-      this.macros[lang].map((macro) => macro.names).flat(),
+      this.macros.map((macro) => macro.names).flat(),
     )
 
     if (!predict) {
@@ -97,9 +95,7 @@ export class Search extends Service {
 
     const exactly = predict === name || predict.substring(1) === name
 
-    const id = this.macros[lang].find(({ names }) =>
-      names.includes(predict),
-    )?.id
+    const id = this.macros.find(({ names }) => names.includes(predict))?.id
 
     if (!id) {
       return
