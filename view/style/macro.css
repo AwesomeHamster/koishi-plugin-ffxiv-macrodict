@@ -3,12 +3,12 @@ body {
   padding: 0;
   width: 800px;
   font-size: 16px;
-  font-family: "Yahei Consolas Hybrid", "Microsoft Yahei UI", Consolas, SimHei, 'Courier New', monospace;
+  font-family: "Microsoft Yahei UI", Consolas, SimHei, 'Courier New', monospace;
 }
 
 code {
   color: orange;
-  border: #30363d 2px solid;
+  border: 2px solid #30363d;
   margin: 0px 7px;
   margin-right: 0;
   padding: 5px;
@@ -23,10 +23,9 @@ kbd {
   color: rgb(201, 209, 217);
   vertical-align: middle;
   background-color: rgb(22, 27, 34);
-  border: solid 1px rgba(110, 118, 129, 0);
-  border-bottom-color: rgba(110, 118, 129, 0);
+  border: solid 1px rgb(110, 118, 129, 0);
   border-radius: 6px;
-  box-shadow: inset 0 -1px 0 rgba(110, 118, 129, 0);
+  box-shadow: inset 0 -1px 0 rgb(110, 118, 129, 0);
 }
 
 #container {
