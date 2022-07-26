@@ -42,3 +42,10 @@ export const commandPrefix = [
   'ShortAlias',
 ] as const
 export type CommandPrefix = typeof commandPrefix[number]
+
+/**
+ * remove slashes in string
+ */
+export function slashless(str: string): string {
+  return str.replace(/\//g, '')
+}
