@@ -1,11 +1,12 @@
 import path from 'path'
 
 import type {} from '@koishijs/plugin-puppeteer'
-import { closest } from 'fastest-levenshtein'
+import { closest, distance } from 'fastest-levenshtein'
 import { Context, Service, segment } from 'koishi'
 
 import { parseMacroDescription } from './parser'
 import { commandPrefix, Locale, slashless } from './utils'
+import { Config } from './config'
 
 interface MacroWithoutDescription {
   id: number
@@ -21,10 +22,13 @@ interface Macro {
 }
 
 export class Search extends Service {
+  config: Required<Config>
   macros?: MacroWithoutDescription[]
 
-  constructor(ctx: Context) {
+  constructor(ctx: Context, config: Required<Config>) {
     super(ctx, 'macrodict', true)
+
+    this.config = config
 
     this.ctx.on(
       'macrodict/update',
@@ -79,7 +83,7 @@ export class Search extends Service {
     }
   }
 
-  async search(name: string, lang: Locale): Promise<Macro | undefined> {
+  async search(name: string, lang: Locale, threshold: number): Promise<Macro | undefined> {
     if (!this.macros) {
       this.macros = await this.getNames()
     }
@@ -89,7 +93,7 @@ export class Search extends Service {
       this.macros.map((macro) => macro.names).flat(),
     )
 
-    if (!predict) {
+    if (!predict || distance(name, predict) <= threshold) {
       return
     }
 
