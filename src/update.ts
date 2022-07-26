@@ -23,10 +23,7 @@ export type Fields =
   | 'ShortAlias'
   | 'Description'
 
-export type Macros = Record<
-  Fields | 'ID' | 'locale',
-  string
->
+export type Macros = Record<Fields | 'ID' | 'locale', string>
 
 export class Updater {
   private logger = new Logger('macrodict')
@@ -55,17 +52,11 @@ export class Updater {
     const macros = this.normalize(await this.fetchIntl())
     const cnMacros = this.normalize(await this.fetchCn())
     const koMacros = this.normalize(await this.fetchKo())
-    for (const [id, macro] of [
-      ...Object.entries(cnMacros),
-      ...Object.entries(koMacros),
-    ]) {
-      if (id in macros) {
-        macros[id] = { ...macros[id], ...macro }
-      } else {
-        macros[id] = macro as any
-      }
-    }
-    await this.ctx.database.upsert('macrodict', Object.values(macros))
+
+    await this.ctx.database.upsert(
+      'macrodict',
+      Object.values(macros.concat(cnMacros).concat(koMacros)),
+    )
     this.logger.info('macros updated')
     this.ctx.emit('macrodict/update')
     return Object.keys(macros).length
@@ -157,39 +148,37 @@ export class Updater {
       },
     )
 
-    const rows = await new Promise<Macros[]>(
-      (resolve, reject) => {
-        const rows: Macros[] = []
-        parseStream(content, {
-          skipLines: 1,
-          ignoreEmpty: false,
-          headers: true,
+    const rows = await new Promise<Macros[]>((resolve, reject) => {
+      const rows: Macros[] = []
+      parseStream(content, {
+        skipLines: 1,
+        ignoreEmpty: false,
+        headers: true,
+      })
+        .on('error', (err) => reject(err))
+        .on('data', (row) => {
+          // CSV files from SaintCoinach has the first 3 rows as headers,
+          // but only the second row is useful for naming.
+          // the third row is type information, which we don't need.
+          // `#` column is the ID, which is always number.
+          if (/^[0-9]+$/.test(row?.['#'])) {
+            rows.push({
+              ID: row?.['#'],
+              Alias: row.Alias,
+              Command: row.Command,
+              Description: row.Description,
+              ShortAlias: row.ShortAlias,
+              ShortCommand: row.ShortCommand,
+              locale: 'ko',
+            })
+          }
         })
-          .on('error', (err) => reject(err))
-          .on('data', (row) => {
-            // CSV files from SaintCoinach has the first 3 rows as headers,
-            // but only the second row is useful for naming.
-            // the third row is type information, which we don't need.
-            // `#` column is the ID, which is always number.
-            if (/^[0-9]+$/.test(row?.['#'])) {
-              rows.push({
-                ID: row?.['#'],
-                Alias: row.Alias,
-                Command: row.Command,
-                Description: row.Description,
-                ShortAlias: row.ShortAlias,
-                ShortCommand: row.ShortCommand,
-                locale: 'ko',
-              })
-            }
-          })
-          .on('end', (rowCount: number) => {
-            if (rowCount === 0) reject(new Error('csv reads no data'))
+        .on('end', (rowCount: number) => {
+          if (rowCount === 0) reject(new Error('csv reads no data'))
 
-            resolve(rows)
-          })
-      },
-    )
+          resolve(rows)
+        })
+    })
 
     return rows
   }
@@ -198,20 +187,18 @@ export class Updater {
    * Transforms the raw data from xivapi or github to a shape like:
    * `{ 1: { id: "1", Command_en: "command", ShortCommand_en: "short-command", ... }}`
    */
-  normalize<T extends { ID?: string }>(
-    macros: T[],
-  ): Record<string, T> {
-    const map = new Map<string, T>()
+  normalize<T extends { ID?: string }>(macros: T[]): T[] {
+    const set = new Set<T>()
     for (const macro of macros) {
       const id = macro.ID
       delete macro.ID
       if (id) {
-        map.set(id, {
+        set.add({
           macroId: id,
           ...macro,
         })
       }
     }
-    return Object.fromEntries(map)
+    return Array.from(set)
   }
 }

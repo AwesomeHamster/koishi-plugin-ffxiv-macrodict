@@ -33,22 +33,24 @@ export class Search extends Service {
   }
 
   async getNames(locale?: Locale): Promise<MacroWithoutDescription[]> {
-    const db = await this.ctx.database.get('macrodict', {
-      locale: { $eq: locale },
-    }, [
-      'id',
-      'locale',
-      ...commandPrefix,
-    ])
+    const db = await this.ctx.database.get(
+      'macrodict',
+      locale
+        ? {
+            locale: { $eq: locale },
+          }
+        : {},
+      ['macroId', 'locale', ...commandPrefix],
+    )
 
     const ret: MacroWithoutDescription[] = []
 
     for (const row of db) {
-      const { id, locale } = row
+      const { macroId, locale } = row
 
       // initialize macro metadata container
       ret.push({
-        id,
+        id: macroId,
         locale: locale as Locale,
         names: [],
       })
@@ -68,10 +70,10 @@ export class Search extends Service {
         macroId: { $eq: id },
         locale: { $eq: lang },
       },
-      ['id', 'Command', 'Description'],
+      ['macroId', 'Command', 'Description'],
     )
     return {
-      id: db[0].id,
+      id: db[0].macroId,
       name: db[0]['Command'],
       description: db[0]['Description'],
     }
@@ -93,9 +95,7 @@ export class Search extends Service {
 
     const exactly = predict === name || predict.substring(1) === name
 
-    const id = this.macros.find(({ names }) =>
-      names.includes(predict),
-    )?.id
+    const id = this.macros.find(({ names }) => names.includes(predict))?.id
 
     if (!id) {
       return
