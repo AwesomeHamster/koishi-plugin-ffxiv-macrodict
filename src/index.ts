@@ -24,9 +24,7 @@ export async function apply(ctx: Context, _config: Config): Promise<void> {
       lastUpdated: 'integer',
       locale: 'string',
       ...Object.fromEntries(
-        ['Description']
-          .concat(commandPrefix)
-          .map((key) => [key, 'string']),
+        ['Description'].concat(commandPrefix).map((key) => [key, 'string']),
       ),
     },
     {
