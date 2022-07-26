@@ -1,5 +1,5 @@
 {
-  "extends": "@hamster-bot/constructeur/tsconfig.json",
+  "extends": "@hamster-bot/constructeur/tsconfig.base.json",
   "compilerOptions": {
     "outDir": "dist"
   },
