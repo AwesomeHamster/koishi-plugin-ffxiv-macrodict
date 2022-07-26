@@ -70,7 +70,7 @@ export class Search extends Service {
     const db = await this.ctx.database.get(
       'macrodict',
       {
-        id: { $eq: id },
+        macroId: { $eq: id },
         locale: { $eq: lang },
       },
       ['id', 'Command', 'Description'],

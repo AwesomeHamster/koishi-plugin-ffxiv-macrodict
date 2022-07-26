@@ -204,8 +204,12 @@ export class Updater {
     const map = new Map<string, T>()
     for (const macro of macros) {
       const id = macro.ID
+      delete macro.ID
       if (id) {
-        map.set(id, macro)
+        map.set(id, {
+          macroId: id,
+          ...macro,
+        })
       }
     }
     return Object.fromEntries(map)
