@@ -200,16 +200,12 @@ export class Updater {
    */
   normalize<T extends { ID?: string }>(
     macros: T[],
-  ): Record<string, Omit<T, 'ID'> & { id: number }> {
-    const map = new Map<string, T & { id: number }>()
+  ): Record<string, T> {
+    const map = new Map<string, T>()
     for (const macro of macros) {
       const id = macro.ID
-      delete macro.ID
       if (id) {
-        map.set(id, {
-          id: Number(id),
-          ...macro,
-        })
+        map.set(id, macro)
       }
     }
     return Object.fromEntries(map)
