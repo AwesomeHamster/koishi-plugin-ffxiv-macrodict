@@ -65,7 +65,7 @@ describe('macrodict', () => {
         .and.equal(102, 'id should be 102')
     })
     it('should search macro by name', async () => {
-      const say = await app.macrodict.search('say', 'en')
+      const say = await app.macrodict.search('say', 'en', 3)
       expect(say).to.not.be.a('undefined', 'should not be undefined')
       expect(say?.id)
         .to.be.a('number', 'id should be a number')

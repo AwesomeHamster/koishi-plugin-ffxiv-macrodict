@@ -12,7 +12,7 @@ const keyMap: { [k: string]: string } = {
 }
 
 /**
- * Parse a macro definition text for HTML.
+ * Parse a macro definition text.
  */
 export function parseMacroDescription(
   description: string,
