@@ -10,7 +10,7 @@ export type MacroDictDatabase = Record<
 }
 
 export interface MacroDictDatabaseConfig {
-  imageMode?: boolean
+  mode?: 'auto' | 'text'
 }
 
 declare module 'koishi' {

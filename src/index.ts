@@ -39,7 +39,7 @@ export async function apply(ctx: Context, _config: Config): Promise<void> {
   const config: Required<Config> = {
     aliases: [],
     defaultLanguage: 'en',
-    defaultMode: ctx.puppeteer ? 'image' : 'text',
+    defaultMode: 'auto',
     fetchOnStart: false,
     threshold: 3,
     ..._config,
@@ -73,7 +73,11 @@ export async function apply(ctx: Context, _config: Config): Promise<void> {
       if (db.exactly) {
         session?.text('.hint', [db.name])
       }
-      const imageMode = session?.channel?.macrodict?.imageMode
+
+      const imageMode =
+        (session?.channel?.macrodict?.mode ?? config.defaultMode) === 'auto'
+          ? !!ctx.puppeteer
+          : false
       if (!imageMode) {
         return session?.text('.format', {
           name: db.name,
@@ -81,7 +85,7 @@ export async function apply(ctx: Context, _config: Config): Promise<void> {
           about: session?.text('.about'),
         })
       }
-      return await ctx.macrodict.render(db, session?.text('.about_html'))
+      return await ctx.macrodict.render(db, session?.text('.about_html') ?? '')
     })
 
   ctx.using(['puppeteer'], (ctx) => {
@@ -93,10 +97,10 @@ export async function apply(ctx: Context, _config: Config): Promise<void> {
       .action(({ options, session }) => {
         if (session?.channel?.macrodict) {
           if (options?.imageMode) {
-            session.channel.macrodict.imageMode = true
+            session.channel.macrodict.mode = 'auto'
             return session?.text('.setting.image_mode')
           } else if (options?.textMode) {
-            session.channel.macrodict.imageMode = false
+            session.channel.macrodict.mode = 'text'
             return session?.text('.setting.text_mode')
           }
         }
