@@ -73,7 +73,10 @@ export async function apply(ctx: Context, _config: Config): Promise<void> {
         session?.text('.hint', [db.name])
       }
 
-      const imageMode = (session?.channel?.macrodict?.mode ?? config.defaultMode) === 'auto' ? !!ctx.puppeteer : false
+      const imageMode =
+        (session?.channel?.macrodict?.mode ?? config.defaultMode) === 'auto'
+          ? !!ctx.puppeteer
+          : false
       if (!imageMode) {
         return session?.text('.format', {
           name: db.name,
