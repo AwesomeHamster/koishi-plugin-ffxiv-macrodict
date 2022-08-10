@@ -39,7 +39,7 @@ export async function apply(ctx: Context, _config: Config): Promise<void> {
   const config: Required<Config> = {
     aliases: [],
     defaultLanguage: 'en',
-    defaultMode: ctx.puppeteer ? 'image' : 'text',
+    defaultMode: 'auto',
     fetchOnStart: false,
     ..._config,
   }
@@ -81,7 +81,7 @@ export async function apply(ctx: Context, _config: Config): Promise<void> {
           about: session?.text('.about'),
         })
       }
-      return await ctx.macrodict.render(db, session?.text('.about_html'))
+      return await ctx.macrodict.render(db, session?.text('.about_html') ?? '')
     })
 
   ctx.using(['puppeteer'], (ctx) => {
