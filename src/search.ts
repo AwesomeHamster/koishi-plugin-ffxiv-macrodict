@@ -130,45 +130,34 @@ export class Search extends Service {
 
     await page.goto(`file:///${path.resolve(__dirname, '../view/macro.html')}`)
 
-    const result = await page.evaluate(
-      (name, description, about) => {
+    await page.evaluate(
+      (name: string, description: string, about: string): void => {
         let el = document.getElementById('macro-name')
-        if (!el) {
-          return false
+        if (el) {
+          el.innerText = name
         }
-        el.innerText = name
         el = document.getElementById('macro-description')
-        if (!el) {
-          return false
+        if (el) {
+          el.innerHTML = description
         }
-        el.innerHTML = description
         el = document.getElementById('about')
-        if (!el) {
-          return false
+        if (el) {
+          el.innerHTML = about
         }
-        el.innerHTML = about
-        return true
       },
       name,
       descriptionHtml,
       about,
     )
 
-    if (!result) {
-      throw new Error(`Cannot render the description of ${name}.`)
-    }
-
     // set the viewport to the same size as the page
-    const { width, height } = await page.evaluate(() => {
+    const width = await page.evaluate(() => {
       const ele = document.body
-      return {
-        width: ele.scrollWidth,
-        height: ele.scrollHeight,
-      }
+      return ele.scrollWidth
     })
     await page.setViewport({
       width,
-      height,
+      height: 200,
     })
 
     // take a screenshot
