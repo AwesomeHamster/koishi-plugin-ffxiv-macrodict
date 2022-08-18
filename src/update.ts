@@ -16,12 +16,7 @@ export type XivapiResponse<T = any> = {
   Results: T[]
 }
 
-export type Fields =
-  | 'Command'
-  | 'ShortCommand'
-  | 'Alias'
-  | 'ShortAlias'
-  | 'Description'
+export type Fields = 'Command' | 'ShortCommand' | 'Alias' | 'ShortAlias' | 'Description'
 
 export type Macros = Record<Fields | 'ID' | 'locale', string>
 
@@ -53,10 +48,7 @@ export class Updater {
     const cnMacros = this.normalize(await this.fetchCn())
     const koMacros = this.normalize(await this.fetchKo())
 
-    await this.ctx.database.upsert(
-      'macrodict',
-      Object.values(macros.concat(cnMacros).concat(koMacros)),
-    )
+    await this.ctx.database.upsert('macrodict', Object.values(macros.concat(cnMacros).concat(koMacros)))
     this.logger.info('macros updated')
     this.ctx.emit('macrodict/update')
     return Object.keys(macros).length
@@ -78,26 +70,16 @@ export class Updater {
   }
 
   async fetchIntl(): Promise<Macros[]> {
-    type IntlMacros = Record<
-      `${Fields}_${'en' | 'de' | 'fr' | 'ja'}` | 'ID',
-      string
-    >
+    type IntlMacros = Record<`${Fields}_${'en' | 'de' | 'fr' | 'ja'}` | 'ID', string>
     const locales = ['en', 'de', 'fr', 'ja'] as const
     const data = await this.fetchXivapi<IntlMacros>(
       'https://xivapi.com/TextCommand',
-      [
-        'ID',
-        ...locales.reduce<string[]>((arr, loc) => {
-          arr.push(
-            `Command_${loc}`,
-            `ShortCommand_${loc}`,
-            `Alias_${loc}`,
-            `ShortAlias_${loc}`,
-            `Description_${loc}`,
-          )
+      ['ID'].concat(
+        locales.reduce<string[]>((arr, loc) => {
+          arr.push(`Command_${loc}`, `ShortCommand_${loc}`, `Alias_${loc}`, `ShortAlias_${loc}`, `Description_${loc}`)
           return arr
         }, []),
-      ],
+      ),
     )
     const ret: Macros[] = []
     for (const macro of data) {
@@ -120,14 +102,7 @@ export class Updater {
   async fetchCn(): Promise<Macros[]> {
     const data = await this.fetchXivapi<Record<`${Fields}_chs` | 'ID', string>>(
       'https://cafemaker.wakingsands.com/TextCommand',
-      [
-        'ID',
-        'Command_chs',
-        'ShortCommand_chs',
-        'Alias_chs',
-        'ShortAlias_chs',
-        'Description_chs',
-      ],
+      ['ID', 'Command_chs', 'ShortCommand_chs', 'Alias_chs', 'ShortAlias_chs', 'Description_chs'],
     )
     return data.map((macro) => ({
       ID: macro.ID,

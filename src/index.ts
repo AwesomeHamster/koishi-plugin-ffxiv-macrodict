@@ -5,7 +5,7 @@ import i18n from './i18n'
 import { parseMacroDescription } from './parser'
 import { Search } from './search'
 import { Updater } from './update'
-import { commandPrefix, Locale, locales } from './utils'
+import { Locale, locales } from './utils'
 
 export { Config }
 
@@ -23,9 +23,12 @@ export async function apply(ctx: Context, _config: Config): Promise<void> {
       macroId: 'unsigned',
       lastUpdated: 'integer',
       locale: 'string',
-      ...Object.fromEntries(
-        ['Description'].concat(commandPrefix).map((key) => [key, 'string']),
-      ),
+      // Macros
+      Description: 'string',
+      Alias: 'string',
+      ShortCommand: 'string',
+      ShortAlias: 'string',
+      Command: 'string',
     },
     {
       autoInc: true,
@@ -58,9 +61,7 @@ export async function apply(ctx: Context, _config: Config): Promise<void> {
     .action(async ({ session, options }, macro) => {
       let lang = (options?.lang as Locale) ?? config.defaultLanguage
       if (!lang || !locales.includes(lang)) {
-        session?.sendQueued(
-          session.text('.wrong_language', [lang, config.defaultLanguage]),
-        )
+        session?.sendQueued(session.text('.wrong_language', [lang, config.defaultLanguage]))
         lang = config.defaultLanguage as Locale
       }
       const db = await ctx.macrodict.search(macro, lang)
@@ -73,10 +74,7 @@ export async function apply(ctx: Context, _config: Config): Promise<void> {
         session?.text('.hint', [db.name])
       }
 
-      const imageMode =
-        (session?.channel?.macrodict?.mode ?? config.defaultMode) === 'auto'
-          ? !!ctx.puppeteer
-          : false
+      const imageMode = (session?.channel?.macrodict?.mode ?? config.defaultMode) === 'auto' ? !!ctx.puppeteer : false
       if (!imageMode) {
         return session?.text('.format', {
           name: db.name,

@@ -26,10 +26,7 @@ export class Search extends Service {
   constructor(ctx: Context) {
     super(ctx, 'macrodict', true)
 
-    this.ctx.on(
-      'macrodict/update',
-      async () => (this.macros = await this.getNames()),
-    )
+    this.ctx.on('macrodict/update', async () => (this.macros = await this.getNames()))
   }
 
   async getNames(locale?: Locale): Promise<MacroWithoutDescription[]> {
@@ -84,10 +81,7 @@ export class Search extends Service {
       this.macros = await this.getNames()
     }
 
-    const predict = closest(
-      name,
-      this.macros.map((macro) => macro.names).flat(),
-    )
+    const predict = closest(name, this.macros.map((macro) => macro.names).flat())
 
     if (!predict) {
       return
@@ -113,10 +107,7 @@ export class Search extends Service {
     }
   }
 
-  async render(
-    macro: { name: string; description: string },
-    about: string,
-  ): Promise<string> {
+  async render(macro: { name: string; description: string }, about: string): Promise<string> {
     const { puppeteer } = this.ctx
 
     if (!puppeteer) {

@@ -1,9 +1,6 @@
 import { Search } from './search'
 
-export type MacroDictDatabase = Record<
-  CommandPrefix | 'Description' | 'locale',
-  string
-> & {
+export type MacroDictDatabase = Record<CommandPrefix | 'Description' | 'locale', string> & {
   id: number
   lastUpdated: number
   macroId: number
@@ -35,10 +32,5 @@ declare module 'koishi' {
 
 export const locales = ['en', 'de', 'fr', 'ja', 'ko', 'zh'] as const
 export type Locale = typeof locales[number]
-export const commandPrefix = [
-  'Command',
-  'Alias',
-  'ShortCommand',
-  'ShortAlias',
-] as const
+export const commandPrefix = ['Command', 'Alias', 'ShortCommand', 'ShortAlias'] as const
 export type CommandPrefix = typeof commandPrefix[number]
