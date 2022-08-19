@@ -46,8 +46,9 @@
   },
   "koishi": {
     "description": {
-      "en": "FFXIV (FINAL FANTASY XIV) Macro Dictionary",
-      "zh": "FFXIV (最终幻想14) 宏学词典"
+      "en": "FFXIV (FINAL FANTASY XIV) Macro Dictionary / Text Command Searching",
+      "ja": "FFXIV (FINAL FANTASY XIV)マクロ辞典 / テキストコマンド検索",
+      "zh": "FFXIV (最终幻想14) 宏学词典／文本指令检索"
     },
     "service": {
       "required": [
