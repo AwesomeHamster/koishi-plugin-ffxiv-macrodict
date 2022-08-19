@@ -14,10 +14,7 @@ const keyMap: { [k: string]: string } = {
 /**
  * Parse a macro definition text for HTML.
  */
-export function parseMacroDescription(
-  description: string,
-  format: 'html' | 'text' = 'html',
-): string {
+export function parseMacroDescription(description: string, format: 'html' | 'text' = 'html'): string {
   const renderer = new Renderer(format)
   let index = 0
   let result = ''
@@ -83,21 +80,15 @@ class Renderer {
   }
 
   p(text: string, className?: string): string {
-    return this.html
-      ? `<p${className ? ` class="${className}"` : ''}>${text}</p>`
-      : `${text}\n`
+    return this.html ? `<p${className ? ` class="${className}"` : ''}>${text}</p>` : `${text}\n`
   }
 
   span(text: string, className?: string): string {
-    return this.html
-      ? `<span${className ? ` class="${className}"` : ''}>${text}</span>`
-      : ` ${text} `
+    return this.html ? `<span${className ? ` class="${className}"` : ''}>${text}</span>` : ` ${text} `
   }
 
   kbd(text: string, className?: string): string {
-    return this.html
-      ? `<kbd${className ? ` class="${className}"` : ''}>${text}</kbd>`
-      : `[${text}]`
+    return this.html ? `<kbd${className ? ` class="${className}"` : ''}>${text}</kbd>` : `[${text}]`
   }
 
   br(): string {
