@@ -1,4 +1,5 @@
 import { Schema } from 'koishi'
+
 import { Locale, locales } from './utils'
 
 export interface Config {

@@ -17,4 +17,4 @@ jobs:
           test: yarn test
           install-peer: >
             koishi
-            @koishijs/plugin-puppeteer
+            koishi-plugin-puppeteer

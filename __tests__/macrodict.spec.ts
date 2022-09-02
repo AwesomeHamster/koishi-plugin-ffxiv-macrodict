@@ -58,25 +58,18 @@ describe('macrodict', () => {
     it('should get macro by id', async () => {
       // id 102 is "/say" command
       const say = await app.macrodict.get(102, 'en')
-      expect(say.id)
-        .to.be.a('number', 'id should be a number')
-        .and.equal(102, 'id should be 102')
+      expect(say.id).to.be.a('number', 'id should be a number').and.equal(102, 'id should be 102')
     })
     it('should search macro by name', async () => {
       const say = await app.macrodict.search('say', 'en', 3)
       expect(say).to.not.be.a('undefined', 'should not be undefined')
-      expect(say?.id)
-        .to.be.a('number', 'id should be a number')
-        .and.equal(102, 'id should be 102')
+      expect(say?.id).to.be.a('number', 'id should be a number').and.equal(102, 'id should be 102')
     })
   })
 
   describe('render', () => {
     it('should render macro in text', async () => {
-      client.shouldReply(
-        'macrodict say -l en',
-        /Send a message to all PCs within a small radius\./,
-      )
+      client.shouldReply('macrodict say -l en', /Send a message to all PCs within a small radius\./)
     })
   })
 })
