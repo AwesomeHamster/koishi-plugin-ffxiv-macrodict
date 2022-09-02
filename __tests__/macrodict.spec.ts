@@ -1,10 +1,10 @@
+import memory from '@koishijs/plugin-database-memory'
+import mock from '@koishijs/plugin-mock'
 import { expect } from 'chai'
 import { App } from 'koishi'
-import mock from '@koishijs/plugin-mock'
-import memory from '@koishijs/plugin-database-memory'
 
-import { Updater } from '../src/update'
 import * as macrodict from '../src'
+import { Updater } from '../src/update'
 
 describe('macrodict', () => {
   const app = new App()

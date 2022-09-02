@@ -4,9 +4,9 @@ import type {} from '@koishijs/plugin-puppeteer'
 import { closest, distance } from 'fastest-levenshtein'
 import { Context, Service, segment } from 'koishi'
 
+import { Config } from './config'
 import { parseMacroDescription } from './parser'
 import { commandPrefix, Locale, slashless } from './utils'
-import { Config } from './config'
 
 interface MacroWithoutDescription {
   id: number
@@ -27,6 +27,8 @@ export class Search extends Service {
 
   constructor(ctx: Context, config: Required<Config>) {
     super(ctx, 'macrodict', true)
+
+    this.config = config
 
     this.ctx.on('macrodict/update', async () => (this.macros = await this.getNames()))
   }
