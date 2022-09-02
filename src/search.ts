@@ -1,6 +1,6 @@
 import path from 'path'
 
-import type {} from '@koishijs/plugin-puppeteer'
+import type {} from 'koishi-plugin-puppeteer'
 import { closest, distance } from 'fastest-levenshtein'
 import { Context, Service, segment } from 'koishi'
 
