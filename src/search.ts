@@ -87,7 +87,7 @@ export class Search extends Service {
 
     const predict = closest(name, this.macros.map((macro) => macro.names).flat())
 
-    if (!predict || distance(name, predict) <= threshold) {
+    if (!predict || distance(name, predict) >= threshold) {
       return
     }
 
