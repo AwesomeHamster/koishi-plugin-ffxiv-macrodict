@@ -3,7 +3,7 @@ import { Context, Logger } from 'koishi'
 
 import type { Config } from './index'
 
-export type XivapiResponse<T = any> = {
+export type XivapiResponse<T = unknown> = {
   Pagination: {
     Page: number
     PageNext: number | null

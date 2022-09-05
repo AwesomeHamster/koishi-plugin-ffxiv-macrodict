@@ -1,11 +1,12 @@
 import path from 'path'
 
 import type {} from 'koishi-plugin-puppeteer'
-import { closest } from 'fastest-levenshtein'
+import { closest, distance } from 'fastest-levenshtein'
 import { Context, Service, segment } from 'koishi'
 
+import { Config } from './config'
 import { parseMacroDescription } from './parser'
-import { commandPrefix, Locale } from './utils'
+import { commandPrefix, Locale, slashless } from './utils'
 
 interface MacroWithoutDescription {
   id: number
@@ -21,10 +22,13 @@ interface Macro {
 }
 
 export class Search extends Service {
+  config: Required<Config>
   macros?: MacroWithoutDescription[]
 
-  constructor(ctx: Context) {
+  constructor(ctx: Context, config: Required<Config>) {
     super(ctx, 'macrodict', true)
+
+    this.config = config
 
     this.ctx.on('macrodict/update', async () => (this.macros = await this.getNames()))
   }
@@ -76,18 +80,18 @@ export class Search extends Service {
     }
   }
 
-  async search(name: string, lang: Locale): Promise<Macro | undefined> {
+  async search(name: string, lang: Locale, threshold: number): Promise<Macro | undefined> {
     if (!this.macros) {
       this.macros = await this.getNames()
     }
 
     const predict = closest(name, this.macros.map((macro) => macro.names).flat())
 
-    if (!predict) {
+    if (!predict || distance(name, predict) >= threshold) {
       return
     }
 
-    const exactly = predict === name || predict.substring(1) === name
+    const exactly = slashless(predict) === slashless(name)
 
     const id = this.macros.find(({ names }) => names.includes(predict))?.id
 

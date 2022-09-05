@@ -44,6 +44,7 @@ export async function apply(ctx: Context, _config: Config): Promise<void> {
     defaultLanguage: 'en',
     defaultMode: 'auto',
     fetchOnStart: false,
+    threshold: 3,
     ..._config,
   }
 
@@ -51,7 +52,7 @@ export async function apply(ctx: Context, _config: Config): Promise<void> {
   Object.entries(i18n).forEach(([key, value]) => ctx.i18n.define(key, value))
 
   ctx.plugin(Search)
-  ctx.plugin(Updater)
+  ctx.plugin(Updater, config)
 
   ctx
     .command('macrodict <macro>')
@@ -64,7 +65,7 @@ export async function apply(ctx: Context, _config: Config): Promise<void> {
         session?.sendQueued(session.text('.wrong_language', [lang, config.defaultLanguage]))
         lang = config.defaultLanguage as Locale
       }
-      const db = await ctx.macrodict.search(macro, lang)
+      const db = await ctx.macrodict.search(macro, lang, config.threshold)
 
       if (!db) {
         return session?.text('.not_found_macro')

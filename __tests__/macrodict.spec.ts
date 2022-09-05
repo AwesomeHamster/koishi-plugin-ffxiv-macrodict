@@ -1,10 +1,10 @@
+import memory from '@koishijs/plugin-database-memory'
+import mock from '@koishijs/plugin-mock'
 import { expect } from 'chai'
 import { App } from 'koishi'
-import mock from '@koishijs/plugin-mock'
-import memory from '@koishijs/plugin-database-memory'
 
-import { Updater } from '../src/update'
 import * as macrodict from '../src'
+import { Updater } from '../src/update'
 
 describe('macrodict', () => {
   const app = new App()
@@ -61,7 +61,7 @@ describe('macrodict', () => {
       expect(say.id).to.be.a('number', 'id should be a number').and.equal(102, 'id should be 102')
     })
     it('should search macro by name', async () => {
-      const say = await app.macrodict.search('say', 'en')
+      const say = await app.macrodict.search('say', 'en', 3)
       expect(say).to.not.be.a('undefined', 'should not be undefined')
       expect(say?.id).to.be.a('number', 'id should be a number').and.equal(102, 'id should be 102')
     })

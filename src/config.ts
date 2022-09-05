@@ -7,6 +7,7 @@ export interface Config {
   defaultLanguage?: Locale
   defaultMode?: 'auto' | 'text'
   fetchOnStart?: boolean
+  threshold?: number
 }
 
 export const Config: Schema<Config> = Schema.object({
@@ -14,4 +15,5 @@ export const Config: Schema<Config> = Schema.object({
   defaultLanguage: Schema.union(locales).default('en'),
   defaultMode: Schema.union(['auto', 'text'] as const).default('auto'),
   fetchOnStart: Schema.boolean().default(false),
+  threshold: Schema.number().default(3),
 })
