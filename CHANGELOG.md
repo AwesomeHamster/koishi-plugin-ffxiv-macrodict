@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.11] - 2022-09-06
+
 ### Added
 
 - add threshold of distance in fuzzy search ([#10](https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/pull/10))
@@ -131,7 +133,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - update function causes errors ([#1](https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/pull/1))
 - placeholder reconized as html tag which cause macro content not fully displayed ([223c306](https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/commit/223c30647ea95d9d52cca3133f3a728f88de1315))
 
-[unreleased]: https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/compare/v2.0.10...HEAD
+[unreleased]: https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/compare/v2.0.11...HEAD
+[2.0.11]: https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/compare/v2.0.10...v2.0.11
 [2.0.10]: https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/compare/v2.0.9...v2.0.10
 [2.0.9]: https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/compare/v2.0.8...v2.0.9
 [2.0.8]: https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/compare/v2.0.7...v2.0.8
