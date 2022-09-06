@@ -1,0 +1,132 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+### Added
+
+- add threshold of distance in fuzzy search (#10)
+- upgrade to adapt koishi v4.8 (#9)
+- optimize html rendering (#15)
+
+### Changed
+
+- add default value in config (#12)
+
+### Removed
+
+- update [`@koishijs/plugin-puppeteer`](https://www.npmjs.com/package/@koishijs/plugin-puppeteer) to the community-driven version [`koishi-plugin-puppeteer`](https://www.npmjs.com/package/koishi-plugin-puppeteer) (#18)
+
+  You need to remove it manually and install `koishi-plugin-puppeteer` instead.
+
+## [2.0.10] - 2022-07-02
+
+### Added
+
+- add text mode (#7)
+- update translations (AwesomeHamster/koishi-plugin-ffxiv-macrodict@fa7e5f3aeeb58b26b29a5ca96684ede094a93884)
+
+### Fixed
+
+- render images should use about_html (AwesomeHamster/koishi-plugin-ffxiv-macrodict@311e59c19d0003c55f8704f35e421eaff4467e17)
+
+## [2.0.9] - 2022-06-22
+
+### Fixed
+
+- should not throw error on render (AwesomeHamster/koishi-plugin-ffxiv-macrodict@6cca70c2462bac173b1802294f40d22ab466d498)
+
+## [2.0.8] - 2022-06-20
+
+### Added
+
+- support fuzzy search (#15)
+- extract search function to Service (#17)
+- update i18n translations from [crowdin](https://crowdin.com/project/hatsushimo) (#13)
+
+### Fixed
+
+- update message not found (#19)
+
+## [2.0.7] - 2022-06-14
+
+### Fixed
+
+- author field in package.json (AwesomeHamster/koishi-plugin-ffxiv-macrodict@71a0adff6a1dffcde69e37ed8bddaf3a8650433a)
+
+## [2.0.6] - 2022-06-12
+
+### Added
+
+- add koishi field in package.json (b06d4f232d704e8f622af645045f55aa0e41e15d)
+
+### Changed
+
+- transform update to class (c0a2706cd6b5c3a4f09633ca6d136a89422ada92)
+
+### Removed
+
+- remove usage of template (c4f9611abb85b805ed5c3d83b6a6e009ca1c0b9e)
+
+## [2.0.5] - 2022-03-12
+
+### Added
+
+- add i18n translations support (#12, #10, e581baa11205f77d3f2fe71806cf93fe5110b335, a0e89409189f479c5f9c5766bb90d6da33171e82)
+
+### Changed
+
+- re-word some command descriptions
+
+### Removed
+
+- remove unused languages
+
+## [2.0.4] - 2022-04-02
+
+### Fixed
+
+- koishi cannot currently load plugin (2d611f0de9cae04e996ef80bca6784d8573f636e)
+
+## [2.0.3] - 2022-04-01
+
+### Fixed
+
+- error occurs in rendering (977eb891db90e3f44790f40d5a8f21aa45a75930)
+
+## [2.0.2] - 2022-04-01
+
+### Added
+
+- configuration page in koishi console (efb4171095d8ef73c3ebbdec4904b66c15497a52)
+
+### Fixed
+
+- remove unused imports, shrink bundle size (7072e4a40c90b9732e3ce2e2695b79e55e5d0694)
+
+## [2.0.1] - 2022-01-21
+
+### Changed
+
+- migrate test files to use plugin-mock (2766ee35b7274221b57d0a13540d4b9b19c522eb)
+
+## [2.0.0] - 2022-01-17
+
+### Added
+
+- add support for koishi v4 (#1)
+- add `fetchOnStart` option (#1)
+
+### Changed
+
+- migrate axios to koishi built-in `ctx.http.get` function (#1)
+
+### Fixed
+
+- puppeteer should be read from `ctx.puppeteer` (#1)
+- update function causes errors (#1)
+- placeholder reconized as html tag which cause macro content not fully displayed (223c30647ea95d9d52cca3133f3a728f88de1315)
