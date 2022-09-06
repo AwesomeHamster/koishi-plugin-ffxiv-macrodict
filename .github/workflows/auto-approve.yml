@@ -15,10 +15,10 @@ jobs:
           trigger: 'approve it'
           reaction: hooray
         env:
-          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+          GITHUB_TOKEN: '${{ secrets.HAMSTER_PAT }}'
       - uses: hmarr/auto-approve-action@v2
         if: steps.check.outputs.triggered == 'true'
         with:
           github-token: ${{ secrets.HAMSTER_PAT }}
-          review-message: "Auto approved by Hamster Bot"
+          review-message: 'Auto approved by Hamster Bot'
           pull-request-number: ${{ github.event.issue.number }}
