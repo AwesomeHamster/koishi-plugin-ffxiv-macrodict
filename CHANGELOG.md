@@ -130,3 +130,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - puppeteer should be read from `ctx.puppeteer` ([#1](https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/pull/1))
 - update function causes errors ([#1](https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/pull/1))
 - placeholder reconized as html tag which cause macro content not fully displayed ([223c306](https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/commit/223c30647ea95d9d52cca3133f3a728f88de1315))
+
+[Unreleased]: https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/compare/v2.0.10...HEAD
+[2.0.10]: https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/compare/v2.0.9...v2.0.10
+[2.0.9]: https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/compare/v2.0.8...v2.0.9
+[2.0.8]: https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/compare/v2.0.7...v2.0.8
+[2.0.7]: https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/compare/v2.0.6...v2.0.7
+[2.0.6]: https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/compare/v2.0.5...v2.0.6
+[2.0.5]: https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/compare/v2.0.4...v2.0.5
+[2.0.4]: https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/compare/v2.0.3...v2.0.4
+[2.0.3]: https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/compare/v2.0.2...v2.0.3
+[2.0.2]: https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/compare/7a16ec4d807b81625b83d6796f64f052901bb00a...v2.0.2
+[2.0.1]: https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/compare/c801c9c59588807a66180dc737526c4fda7bf71a...7a16ec4d807b81625b83d6796f64f052901bb00a
+[2.0.0]: https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/commit/c801c9c59588807a66180dc737526c4fda7bf71a
