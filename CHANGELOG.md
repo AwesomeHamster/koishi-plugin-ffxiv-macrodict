@@ -140,6 +140,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [2.0.5]: https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/compare/v2.0.4...v2.0.5
 [2.0.4]: https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/compare/v2.0.3...v2.0.4
 [2.0.3]: https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/compare/v2.0.2...v2.0.3
-[2.0.2]: https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/compare/7a16ec4d807b81625b83d6796f64f052901bb00a...v2.0.2
-[2.0.1]: https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/compare/c801c9c59588807a66180dc737526c4fda7bf71a...7a16ec4d807b81625b83d6796f64f052901bb00a
+[2.0.2]: https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/compare/v2.0.1...v2.0.2
+[2.0.1]: https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/commit/c801c9c59588807a66180dc737526c4fda7bf71a
