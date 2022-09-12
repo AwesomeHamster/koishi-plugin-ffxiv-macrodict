@@ -71,7 +71,7 @@ export async function apply(ctx: Context, _config: Config): Promise<void> {
         return session?.text('.not_found_macro')
       }
 
-      if (db.exactly) {
+      if (!db.exactly) {
         session?.text('.hint', [db.name])
       }
 
