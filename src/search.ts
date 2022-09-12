@@ -34,15 +34,8 @@ export class Search extends Service {
   }
 
   async getNames(locale?: Locale): Promise<MacroWithoutDescription[]> {
-    const db = await this.ctx.database.get(
-      'macrodict',
-      locale
-        ? {
-            locale: { $eq: locale },
-          }
-        : {},
-      ['macroId', 'locale', ...commandPrefix],
-    )
+    const query = locale ? { locale: { $eq: locale } } : {}
+    const db = await this.ctx.database.get('macrodict', query, ['macroId', 'locale', ...commandPrefix])
 
     const ret: MacroWithoutDescription[] = []
 

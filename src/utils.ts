@@ -24,9 +24,7 @@ declare module 'koishi' {
   }
 
   interface Events {
-    /* eslint-disable @typescript-eslint/naming-convention */
     'macrodict/update': () => void
-    /* eslint-enable @typescript-eslint/naming-convention */
   }
 }
 

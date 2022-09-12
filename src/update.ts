@@ -31,7 +31,7 @@ export class Updater {
     ctx.command('macrodict.update').action(async ({ session }) => {
       session?.sendQueued(session.text('.start_updating_macros'))
       const count = await this.update()
-      session?.text('.macros_updated', [count])
+      session?.text('.updated_macros', [count])
     })
 
     if (config.fetchOnStart) {
@@ -49,9 +49,10 @@ export class Updater {
     const koMacros = this.normalize(await this.fetchKo())
 
     await this.ctx.database.upsert('macrodict', Object.values(macros.concat(cnMacros).concat(koMacros)))
-    this.logger.info('macros updated')
+    const count = Object.keys(macros).length
+    this.logger.info(`${count} macros updated`)
     this.ctx.emit('macrodict/update')
-    return Object.keys(macros).length
+    return count
   }
 
   async fetchXivapi<T>(url: string, columns: string[]): Promise<T[]> {

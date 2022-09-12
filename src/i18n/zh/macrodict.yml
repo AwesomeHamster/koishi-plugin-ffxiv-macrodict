@@ -16,24 +16,17 @@ commands:
       not_updated: '宏学词典未更新。'
       wrong_language: '不存在语言 {0}，将采用默认语言 {1} 进行搜索。'
       not_found_puppeteer: '未找到 koishi-plugin-puppeteer 插件，无法渲染宏指令。'
-      not_found_macro: '找不到宏指令。'
+      not_found_macro: '找不到宏指令 {0}。'
       puppeteer_error: 'koishi-plugin-puppeteer 插件发生错误，无法渲染宏指令。\n{0}'
       hint: '你想找的是 {0} 吗？'
-      about: |
-        由 koishi-plugin-ffxiv-macrodict 生成
-        作者: 迷子 (@Maiko Tan)
-      about_html: |
-        <p>由
-          <code>koishi-plugin-ffxiv-macrodict</code>
-        生成</p>
-        <p>作者: 迷子 (@Maiko Tan)</p>
       format: |
         {name}
         ======
 
         {description}
         -----
-        {about}
+        由 koishi-plugin-ffxiv-macrodict 生成
+        作者: 迷子 (GitHub: @MaikoTan)
 
       setting:
         image_mode: '已切换到图片模式'
