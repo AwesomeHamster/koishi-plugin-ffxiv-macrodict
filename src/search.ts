@@ -111,7 +111,10 @@ export class Search extends Service {
     }
   }
 
-  async render(macro: { name: string; description: string }, about: string): Promise<string> {
+  async render(
+    macro: { name: string; description: string },
+    about: string,
+  ): Promise<ReturnType<typeof segment['image']>> {
     const { puppeteer } = this.ctx
 
     if (!puppeteer) {
