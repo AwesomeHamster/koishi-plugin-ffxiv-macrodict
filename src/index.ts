@@ -1,4 +1,5 @@
 import { Context } from 'koishi'
+import type {} from '@koishijs/plugin-suggest'
 
 import { Config } from './config'
 import i18n from './i18n'
@@ -71,8 +72,12 @@ export async function apply(ctx: Context, _config: Config): Promise<void> {
         return session?.text('.not_found_macro')
       }
 
-      if (db.exactly) {
-        session?.text('.hint', [db.name])
+      if (!db.exactly) {
+        session?.suggest({
+          prefix: session?.text('.hint', [db.name]),
+          suffix: session?.text('.hint_suffix'),
+          apply: (suggestion, next) => {},
+        })
       }
 
       const imageMode = (session?.channel?.macrodict?.mode ?? config.defaultMode) === 'auto' ? !!ctx.puppeteer : false
