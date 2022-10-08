@@ -5,6 +5,7 @@ English | [简体中文](README.zh-CN.md)
 A [koishi](https://github.com/koishijs/koishi) plugin for searching macro descriptions which is used in the famous video game [FFXIV (Final Fantasy XIV)](https://www.finalfantasyxiv.com/)
 
 <!-- AUTO-GENERATED-CONTENT:START (TOC:maxDepth=3) -->
+
 - [Features and Usage](#features-and-usage)
   - [Search Text Command Descriptions](#search-text-command-descriptions)
   - [Update Data Manually](#update-data-manually)

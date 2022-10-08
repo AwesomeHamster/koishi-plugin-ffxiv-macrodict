@@ -2,9 +2,10 @@
 
 [English](README.md) | 简体中文
 
-[koishi](https://github.com/koishijs/koishi) 的插件，用于搜索并显示著名 MMORPG 网络游戏 [最终幻想XIV (Final Fantasy XIV，FFXIV)](https://www.finalfantasyxiv.com/) 的文本指令信息。
+[koishi](https://github.com/koishijs/koishi) 的插件，用于搜索并显示著名 MMORPG 网络游戏 [最终幻想 XIV (Final Fantasy XIV，FFXIV)](https://www.finalfantasyxiv.com/) 的文本指令信息。
 
 <!-- AUTO-GENERATED-CONTENT:START (TOC:maxDepth=3) -->
+
 - [功能与用法](#%E5%8A%9F%E8%83%BD%E4%B8%8E%E7%94%A8%E6%B3%95)
   - [搜索指令的描述](#%E6%90%9C%E7%B4%A2%E6%8C%87%E4%BB%A4%E7%9A%84%E6%8F%8F%E8%BF%B0)
   - [手动更新数据](#%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%96%B0%E6%95%B0%E6%8D%AE)
