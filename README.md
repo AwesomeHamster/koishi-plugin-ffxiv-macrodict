@@ -4,11 +4,62 @@ English | [简体中文](README.zh-CN.md)
 
 A [koishi](https://github.com/koishijs/koishi) plugin for searching macro descriptions which is used in the famous video game [FFXIV (Final Fantasy XIV)](https://www.finalfantasyxiv.com/)
 
-## Features
+<!-- AUTO-GENERATED-CONTENT:START (TOC:maxDepth=3) -->
+- [Features and Usage](#features-and-usage)
+  - [Search Text Command Descriptions](#search-text-command-descriptions)
+  - [Update Data Manually](#update-data-manually)
+- [Install](#install)
+  - [Market](#market)
+  - [Manually](#manually)
+- [Note](#note)
+- [Configuration](#configuration)
+- [Translation](#translation)
+- [LICENSE](#license)
+<!-- AUTO-GENERATED-CONTENT:END -->
 
-The plugin add two new commands: `macrodict` to search macro descriptions, and `macrodict.update` to update those data.
+## Features and Usage
 
-You can invoke `help` command to see the description and usage of these commands after installing the plugin.
+### Search Text Command Descriptions
+
+Use `macrodict <command-name>` to search the description of a text command.
+
+Example:
+
+```bash
+macrodict target
+# or use alias
+macrodict ta
+# or start with /
+macrodict /target
+```
+
+<!-- Here should be an image shows the result -->
+
+#### Specify Language of Output Description
+
+Use `-l <language-code>` or `--lang <language-code>` to specify the language of the output description.
+Available language codes are:
+
+- `en` (English)
+- `ja` (Japanese)
+- `de` (German)
+- `fr` (French)
+- `zh` (Simplified Chinese)
+- `ko` (Korean)
+
+If you didn't specify the language code, the plugin will use the language code of the current channel, or fallback to English `en`.
+
+Example:
+
+```bash
+macrodict -l en target
+```
+
+<!-- Here should be an image shows the result -->
+
+### Update Data Manually
+
+Use `macrodict.update` to update the data manually.
 
 ## Install
 
