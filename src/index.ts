@@ -13,18 +13,10 @@ export const name = 'macrodict'
 // only allow when database available
 export const using = ['database'] as const
 
-export async function apply(ctx: Context, _config: Config): Promise<void> {
+export async function apply(ctx: Context, config: Config): Promise<void> {
   ctx.model.extend('channel', {
     macrodict: { type: 'json', initial: {} },
   })
-
-  const config: Required<Config> = {
-    aliases: [],
-    defaultLanguage: 'en',
-    defaultMode: 'auto',
-    threshold: 3,
-    ..._config,
-  }
 
   // register i18n resources
   Object.entries(i18n).forEach(([key, value]) => ctx.i18n.define(key, value))

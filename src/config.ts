@@ -3,10 +3,10 @@ import { Schema } from 'koishi'
 import { Locale, locales } from './utils'
 
 export interface Config {
-  aliases?: string[]
-  defaultLanguage?: Locale
-  defaultMode?: 'auto' | 'text'
-  threshold?: number
+  aliases: string[]
+  defaultLanguage: Locale
+  defaultMode: 'auto' | 'text'
+  threshold: number
 }
 
 export const Config: Schema<Config> = Schema.object({
