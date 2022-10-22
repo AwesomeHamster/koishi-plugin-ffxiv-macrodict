@@ -12,8 +12,6 @@ commands:
       textMode: 输出为文本模式
 
     messages:
-      database_error: '数据库发生错误，无法搜索到宏指令。'
-      not_updated: '宏学词典未更新。'
       wrong_language: '不存在语言 {0}，将采用默认语言 {1} 进行搜索。'
       not_found_puppeteer: '未找到 koishi-plugin-puppeteer 插件，无法渲染宏指令。'
       not_found_macro: '找不到宏指令。'
@@ -38,13 +36,3 @@ commands:
       setting:
         image_mode: '已切换到图片模式'
         text_mode: '已切换到文本模式'
-
-  macrodict.update:
-    description: 更新宏学词典
-
-    usage: |
-      macrodict.update
-
-    messages:
-      start_updating_macros: '开始更新宏学词典。'
-      updated_macros: '宏学词典更新完毕。共 {0} 个宏指令。'

@@ -4,7 +4,6 @@ import { Config } from './config'
 import i18n from './i18n'
 import { parseMacroDescription } from './parser'
 import { Search } from './search'
-import { Updater } from './update'
 import { Locale, locales } from './utils'
 
 export { Config }
@@ -15,26 +14,6 @@ export const name = 'macrodict'
 export const using = ['database'] as const
 
 export async function apply(ctx: Context, _config: Config): Promise<void> {
-  // set database
-  ctx.model.extend(
-    'macrodict',
-    {
-      id: 'unsigned',
-      macroId: 'unsigned',
-      lastUpdated: 'integer',
-      locale: 'string',
-      // Macros
-      Description: 'string',
-      Alias: 'string',
-      ShortCommand: 'string',
-      ShortAlias: 'string',
-      Command: 'string',
-    },
-    {
-      autoInc: true,
-    },
-  )
-
   ctx.model.extend('channel', {
     macrodict: { type: 'json', initial: {} },
   })
@@ -43,7 +22,6 @@ export async function apply(ctx: Context, _config: Config): Promise<void> {
     aliases: [],
     defaultLanguage: 'en',
     defaultMode: 'auto',
-    fetchOnStart: false,
     threshold: 3,
     ..._config,
   }
@@ -52,7 +30,6 @@ export async function apply(ctx: Context, _config: Config): Promise<void> {
   Object.entries(i18n).forEach(([key, value]) => ctx.i18n.define(key, value))
 
   ctx.plugin(Search)
-  ctx.plugin(Updater, config)
 
   ctx
     .command('macrodict <macro>')

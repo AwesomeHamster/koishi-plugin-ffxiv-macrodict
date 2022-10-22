@@ -6,7 +6,7 @@ A [koishi](https://github.com/koishijs/koishi) plugin for searching macro descri
 
 ## Features
 
-The plugin add two new commands: `macrodict` to search macro descriptions, and `macrodict.update` to update those data.
+The plugin add two new commands: `macrodict` to search macro descriptions.
 
 You can invoke `help` command to see the description and usage of these commands after installing the plugin.
 
@@ -15,7 +15,7 @@ You can invoke `help` command to see the description and usage of these commands
 ### Market
 
 If you create your Bot project via the [Koishi boilerplate](https://github.com/koishijs/boilerplate/generate), you can install the `koishi-plugin-ffxiv-macrodict` plugin from the plugin market.
-As the dependency of the plugin, you may need to install [koishi-plugin-puppeteer](https://npmjs.com/package/koishi-plugin-puppeteer) and any database plugin before enable the plugin.
+As the dependency of the plugin, you may need to install [koishi-plugin-puppeteer](https://npmjs.com/package/koishi-plugin-puppeteer) before enable the plugin.
 
 You can follow the instructions from [Install and Configure Plugins](https://koishi.js.org/manual/starter/console.html#%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE%E6%8F%92%E4%BB%B6) to add the plugin to your Bot.
 
@@ -29,10 +29,6 @@ $ yarn add koishi-plugin-ffxiv-macrodict
 # But you can use `npm` if you prefer
 $ npm install --save koishi-plugin-ffxiv-macrodict
 ```
-
-## Note
-
-The plugin will automatically fetch data from [xivapi.com](https://xivapi.com/) for international ragion, [cafemaker](https://cafemaker.wakingsands.com/) for Chinese ragion and [Ra-Workspace/ffxiv-datamining-ko](https://github.com/Ra-Workspace/ffxiv-datamining-ko) for Korean ragion, and cache it in the database.
 
 ## Configuration
 

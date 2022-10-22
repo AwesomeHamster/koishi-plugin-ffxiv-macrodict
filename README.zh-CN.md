@@ -6,7 +6,7 @@
 
 ## 功能
 
-本插件添加了 `macrodict` 命令用于搜索宏描述文本信息，以及 `macrodict.update` 命令用于更新这些数据。
+本插件添加了 `macrodict` 命令用于搜索宏描述文本信息。
 
 你可以在安装插件后使用 `help` 命令查看这些命令的介绍与使用方法。
 
@@ -14,7 +14,7 @@
 
 ### 插件市场
 
-如果你通过 [Koishi 模板项目](https://github.com/koishijs/boilerplate/generate)创建了你的机器人，你可以直接在插件市场安装名为 `koishi-plugin-ffxiv-macrodict` 的插件。你可能还需要安装 [koishi-plugin-puppeteer](https://npmjs.com/package/koishi-plugin-puppeteer) 以及任意一个数据库插件才能启用本插件。
+如果你通过 [Koishi 模板项目](https://github.com/koishijs/boilerplate/generate)创建了你的机器人，你可以直接在插件市场安装名为 `koishi-plugin-ffxiv-macrodict` 的插件。你可能还需要安装 [koishi-plugin-puppeteer](https://npmjs.com/package/koishi-plugin-puppeteer) 才能启用本插件。
 
 你可以需要参考[安装和配置插件](https://koishi.js.org/manual/starter/console.html#%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE%E6%8F%92%E4%BB%B6)的说明添加此插件到你的机器人中。
 
@@ -28,10 +28,6 @@ $ yarn add koishi-plugin-ffxiv-macrodict
 # 但是你也可以使用 `npm`
 $ npm install --save koishi-plugin-ffxiv-macrodict
 ```
-
-## 注意
-
-本插件会自动从 [xivapi.com](https://xivapi.com/) 获取国际服数据，从 [cafemaker](https://cafemaker.wakingsands.com/) 获取中文服数据，从 [Ra-Workspace/ffxiv-datamining-ko](https://github.com/Ra-Workspace/ffxiv-datamining-ko) 获取韩服数据，并缓存到数据库中。
 
 ## 配置
 

@@ -1,18 +1,13 @@
 import path from 'path'
 
 import type {} from 'koishi-plugin-puppeteer'
-import { closest, distance } from 'fastest-levenshtein'
+import { get as getMacro, search as searchMacro, nameToIdMap } from 'ffxiv-textcommand-data'
 import { Context, Service, segment } from 'koishi'
 
 import { Config } from './config'
 import { parseMacroDescription } from './parser'
-import { commandPrefix, Locale, slashless } from './utils'
+import { Locale } from './utils'
 
-interface MacroWithoutDescription {
-  id: number
-  locale: Locale
-  names: string[]
-}
 interface Macro {
   id: number
   name: string
@@ -23,91 +18,36 @@ interface Macro {
 
 export class Search extends Service {
   config: Required<Config>
-  macros?: MacroWithoutDescription[]
 
   constructor(ctx: Context, config: Required<Config>) {
     super(ctx, 'macrodict', true)
 
     this.config = config
-
-    this.ctx.on('macrodict/update', async () => (this.macros = await this.getNames()))
   }
 
-  async getNames(locale?: Locale): Promise<MacroWithoutDescription[]> {
-    const db = await this.ctx.database.get(
-      'macrodict',
-      locale
-        ? {
-            locale: { $eq: locale },
-          }
-        : {},
-      ['macroId', 'locale', ...commandPrefix],
-    )
-
-    const ret: MacroWithoutDescription[] = []
-
-    for (const row of db) {
-      const { macroId, locale } = row
-
-      // initialize macro metadata container
-      ret.push({
-        id: macroId,
-        locale: locale as Locale,
-        names: [],
-      })
-
-      for (const key of commandPrefix) {
-        ret[ret.length - 1].names.push(row[key])
-      }
-    }
-
-    return ret
+  async getNames(locale?: Locale): Promise<string[]> {
+    return Object.keys(nameToIdMap[locale ?? 'en'])
   }
 
-  async get(id: number, lang: Locale): Promise<Macro> {
-    const db = await this.ctx.database.get(
-      'macrodict',
-      {
-        macroId: { $eq: id },
-        locale: { $eq: lang },
-      },
-      ['macroId', 'Command', 'Description'],
-    )
+  async get(id: number, lang: Locale): Promise<Macro | undefined> {
+    const macro = getMacro(id, lang)
+    if (!macro) return
     return {
-      id: db[0].macroId,
-      name: db[0]['Command'],
-      description: db[0]['Description'],
+      id,
+      name: macro.Command,
+      description: macro.Description,
     }
   }
 
   async search(name: string, lang: Locale, threshold: number): Promise<Macro | undefined> {
-    if (!this.macros) {
-      this.macros = await this.getNames()
-    }
-
-    const predict = closest(name, this.macros.map((macro) => macro.names).flat())
-
-    if (!predict || distance(name, predict) >= threshold) {
-      return
-    }
-
-    const exactly = slashless(predict) === slashless(name)
-
-    const id = this.macros.find(({ names }) => names.includes(predict))?.id
-
-    if (!id) {
-      return
-    }
-
-    const macro = await this.get(id, lang)
-
-    if (!macro) {
-      return
-    }
-
+    if (!name.startsWith('/')) name = `/${name}`
+    const macro = searchMacro(name, lang, threshold)
+    if (!macro) return
     return {
-      ...macro,
-      exactly,
+      id: macro.ID,
+      name: macro.Command,
+      description: macro.Description,
+      exactly: [macro.Command, macro.Alias, macro.ShortAlias, macro.ShortCommand].includes(name),
     }
   }
 
