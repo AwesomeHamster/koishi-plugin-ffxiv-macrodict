@@ -4,7 +4,6 @@ import type {} from 'koishi-plugin-puppeteer'
 import { get as getMacro, search as searchMacro, nameToIdMap } from 'ffxiv-textcommand-data'
 import { Context, Service, segment } from 'koishi'
 
-import { Config } from './config'
 import { parseMacroDescription } from './parser'
 import { Locale } from './utils'
 
@@ -17,12 +16,8 @@ interface Macro {
 }
 
 export class Search extends Service {
-  config: Required<Config>
-
-  constructor(ctx: Context, config: Required<Config>) {
+  constructor(ctx: Context) {
     super(ctx, 'macrodict', true)
-
-    this.config = config
   }
 
   async getNames(locale?: Locale): Promise<string[]> {
