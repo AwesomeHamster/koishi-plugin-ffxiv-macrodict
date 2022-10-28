@@ -4,7 +4,6 @@ import { expect } from 'chai'
 import { App } from 'koishi'
 
 import * as macrodict from '../src'
-import { Updater } from '../src/update'
 
 describe('macrodict', () => {
   const app = new App()
@@ -14,41 +13,10 @@ describe('macrodict', () => {
   app.plugin(macrodict)
 
   const client = app.mock.client('123')
-  const updater = new Updater(app, {})
 
   before(() => app.start())
 
   after(() => app.stop())
-
-  describe('update', () => {
-    it('fetch international macros', async () => {
-      const data = await updater.fetchIntl()
-      expect(data.length).greaterThan(0)
-    })
-      .timeout(0)
-      .retries(3)
-
-    it('fetch chinese macros', async () => {
-      const data = await updater.fetchCn()
-      expect(data.length).greaterThan(0)
-    })
-      .timeout(0)
-      .retries(3)
-
-    it('fetch korean macros', async () => {
-      const data = await updater.fetchKo()
-      expect(data.length).greaterThan(0)
-    })
-      .timeout(0)
-      .retries(3)
-
-    it('update database', async () => {
-      const count = await updater.update()
-      expect(count).greaterThan(0)
-    })
-      .timeout(0)
-      .retries(3)
-  })
 
   describe('search', () => {
     it('should get all names', async () => {
@@ -58,7 +26,8 @@ describe('macrodict', () => {
     it('should get macro by id', async () => {
       // id 102 is "/say" command
       const say = await app.macrodict.get(102, 'en')
-      expect(say.id).to.be.a('number', 'id should be a number').and.equal(102, 'id should be 102')
+      expect(say).to.be.not.a('undefined')
+      expect(say?.id).to.be.a('number', 'id should be a number').and.equal(102, 'id should be 102')
     })
     it('should search macro by name', async () => {
       const say = await app.macrodict.search('say', 'en', 3)
