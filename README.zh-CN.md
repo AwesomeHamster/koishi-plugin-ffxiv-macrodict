@@ -57,10 +57,6 @@ macrodict -l en target
 
 <!-- Here should be an image shows the result -->
 
-### 手动更新数据
-
-使用 `macrodict.update` 手动更新数据。
-
 ## 安装
 
 ### 插件市场

@@ -58,10 +58,6 @@ macrodict -l en target
 
 <!-- Here should be an image shows the result -->
 
-### Update Data Manually
-
-Use `macrodict.update` to update the data manually.
-
 ## Install
 
 ### Market
