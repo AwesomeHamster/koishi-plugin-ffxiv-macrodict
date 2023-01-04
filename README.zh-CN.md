@@ -2,13 +2,60 @@
 
 [English](README.md) | 简体中文
 
-[koishi](https://github.com/koishijs/koishi) 的插件，用于搜索著名的 MMORPG 网络游戏 [FFXIV (Final Fantasy XIV)](https://www.finalfantasyxiv.com/) 的宏描述文本信息。
+[koishi](https://github.com/koishijs/koishi) 的插件，用于搜索并显示著名 MMORPG 网络游戏 [最终幻想 XIV (Final Fantasy XIV，FFXIV)](https://www.finalfantasyxiv.com/) 的文本指令信息。
 
-## 功能
+<!-- AUTO-GENERATED-CONTENT:START (TOC:maxDepth=3) -->
 
-本插件添加了 `macrodict` 命令用于搜索宏描述文本信息。
+- [功能与用法](#%E5%8A%9F%E8%83%BD%E4%B8%8E%E7%94%A8%E6%B3%95)
+  - [搜索指令的描述](#%E6%90%9C%E7%B4%A2%E6%8C%87%E4%BB%A4%E7%9A%84%E6%8F%8F%E8%BF%B0)
+  - [手动更新数据](#%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%96%B0%E6%95%B0%E6%8D%AE)
+- [安装](#%E5%AE%89%E8%A3%85)
+  - [插件市场](#%E6%8F%92%E4%BB%B6%E5%B8%82%E5%9C%BA)
+  - [手动安装](#%E6%89%8B%E5%8A%A8%E5%AE%89%E8%A3%85)
+- [注意](#%E6%B3%A8%E6%84%8F)
+- [配置](#%E9%85%8D%E7%BD%AE)
+- [翻译](#%E7%BF%BB%E8%AF%91)
+- [许可证](#%E8%AE%B8%E5%8F%AF%E8%AF%81)
+<!-- AUTO-GENERATED-CONTENT:END -->
 
-你可以在安装插件后使用 `help` 命令查看这些命令的介绍与使用方法。
+## 功能与用法
+
+### 搜索指令的描述
+
+使用 `macrodict <指令名>` 搜索文本指令信息。
+
+实例：
+
+```bash
+macrodict target
+# 也可以识别中文的文本指令
+macrodict 目标
+# 也可以识别以 / 开头的文本指令
+macrodict /target
+```
+
+<!-- Here should be an image shows the result -->
+
+#### 输出其他语言版本的描述
+
+使用 `-l <语言代码>` 或 `--lang <语言代码>` 指定输出的语言版本。可选值有：
+
+- `en`：英文
+- `ja`：日文
+- `de`：德文
+- `fr`：法文
+- `zh`：简体中文
+- `ko`：韩文
+
+若没有指定语言，则默认以当前频道的语言输出，或回退到英文 `en`。
+
+实例：
+
+```bash
+macrodict -l en target
+```
+
+<!-- Here should be an image shows the result -->
 
 ## 安装
 
