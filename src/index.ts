@@ -52,7 +52,7 @@ export async function apply(ctx: Context, config: Config): Promise<void> {
           about: session?.text('.about'),
         })
       }
-      return await ctx.macrodict.render(db, session?.text('.about_html') ?? '')
+      return await ctx.macrodict.render(db, session?.text('.about_html') ?? '', lang)
     })
 
   ctx.using(['puppeteer'], (ctx) => {
@@ -61,7 +61,7 @@ export async function apply(ctx: Context, config: Config): Promise<void> {
       .channelFields(['macrodict'])
       .option('imageMode', '-i')
       .option('textMode', '-t')
-      .action(({ options, session }) => {
+      .action(({ next, options, session }) => {
         if (session?.channel?.macrodict) {
           if (options?.imageMode) {
             session.channel.macrodict.mode = 'auto'
@@ -71,6 +71,7 @@ export async function apply(ctx: Context, config: Config): Promise<void> {
             return session?.text('.setting.text_mode')
           }
         }
+        return next?.()
       }, true)
   })
 }
