@@ -19,19 +19,31 @@ commands:
       hint: '你想找的是 {0} 吗？'
       about: |
         由 koishi-plugin-ffxiv-macrodict 生成
-        作者: 迷子 (@Maiko Tan)
+        作者: 迷子 (@MaikoTan)
       about_html: |
         <p>由
           <code>koishi-plugin-ffxiv-macrodict</code>
         生成</p>
-        <p>作者: 迷子 (@Maiko Tan)</p>
+        <p>作者: 迷子 (@MaikoTan)</p>
+      copyright: |
+        所有游戏数据均来自史克威尔艾尼克斯控股公司。
+        仅作学习交流之用。
+
+        FINAL FANTASY XIV © 2010 - 2022 SQUARE ENIX CO., LTD. All Rights Reserved.
+      copyright_html: |
+        <p>所有游戏数据均来自史克威尔艾尼克斯控股公司。</p>
+        <p>仅作学习交流之用。</p>
       format: |
         {name}
         ======
 
         {description}
+
         -----
+
         {about}
+
+        {copyright}
 
       setting:
         image_mode: '已切换到图片模式'
