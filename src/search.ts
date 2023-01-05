@@ -44,11 +44,7 @@ export class Search extends Service {
     }
   }
 
-  async render(
-    macro: { name: string; description: string },
-    about: string,
-    lang: string,
-  ): Promise<Element> {
+  async render(macro: { name: string; description: string }, about: string, lang: string): Promise<Element> {
     const { puppeteer } = this.ctx
 
     if (!puppeteer) {
@@ -150,10 +146,10 @@ export class Search extends Service {
     })
 
     // take a screenshot
-    const screenshot = await page.screenshot({
+    const screenshot = (await page.screenshot({
       fullPage: true,
       type: 'png',
-    }) as Buffer
+    })) as Buffer
 
     // don't forget to close the page
     await page.close()
