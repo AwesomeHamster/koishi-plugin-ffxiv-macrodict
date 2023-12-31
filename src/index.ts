@@ -1,4 +1,4 @@
-import { Context } from 'koishi'
+import { Context, h } from 'koishi'
 
 import { Config } from './config'
 import i18n from './i18n'
@@ -29,6 +29,9 @@ export async function apply(ctx: Context, config: Config): Promise<void> {
     .channelFields(['macrodict'])
     .option('lang', '-l <language:string>')
     .action(async ({ session, options }, macro) => {
+      if (!macro?.trim?.()) {
+        return h('message', [h('p', session?.text('.no_macro')), h('br'), h('execute', 'help macrodict')])
+      }
       let lang = (options?.lang as Locale) ?? config.defaultLanguage
       if (!lang || !locales.includes(lang)) {
         session?.sendQueued(session.text('.wrong_language', [lang, config.defaultLanguage]))
