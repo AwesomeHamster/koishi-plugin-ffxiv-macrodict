@@ -1,17 +1,10 @@
-import path from 'path'
-
-import type {} from '@koishijs/plugin-puppeteer'
-import { closest } from 'fastest-levenshtein'
-import { Context, Service, segment } from 'koishi'
+import type {} from 'koishi-plugin-puppeteer'
+import { get as getMacro, search as searchMacro, nameToIdMap } from 'ffxiv-textcommand-data'
+import { Context, Element, h, Service } from 'koishi'
 
 import { parseMacroDescription } from './parser'
-import { commandPrefix, Locale } from './utils'
+import { Locale } from './utils'
 
-interface MacroWithoutDescription {
-  id: number
-  locale: Locale
-  names: string[]
-}
 interface Macro {
   id: number
   name: string
@@ -21,93 +14,37 @@ interface Macro {
 }
 
 export class Search extends Service {
-  macros?: MacroWithoutDescription[]
-
   constructor(ctx: Context) {
     super(ctx, 'macrodict', true)
-
-    this.ctx.on('macrodict/update', async () => (this.macros = await this.getNames()))
   }
 
-  async getNames(locale?: Locale): Promise<MacroWithoutDescription[]> {
-    const db = await this.ctx.database.get(
-      'macrodict',
-      locale
-        ? {
-            locale: { $eq: locale },
-          }
-        : {},
-      ['macroId', 'locale', ...commandPrefix],
-    )
-
-    const ret: MacroWithoutDescription[] = []
-
-    for (const row of db) {
-      const { macroId, locale } = row
-
-      // initialize macro metadata container
-      ret.push({
-        id: macroId,
-        locale: locale as Locale,
-        names: [],
-      })
-
-      for (const key of commandPrefix) {
-        ret[ret.length - 1].names.push(row[key])
-      }
-    }
-
-    return ret
+  async getNames(locale?: Locale): Promise<string[]> {
+    return Object.keys(nameToIdMap[locale ?? 'en'])
   }
 
-  async get(id: number, lang: Locale): Promise<Macro> {
-    const db = await this.ctx.database.get(
-      'macrodict',
-      {
-        macroId: { $eq: id },
-        locale: { $eq: lang },
-      },
-      ['macroId', 'Command', 'Description'],
-    )
+  async get(id: number, lang: Locale): Promise<Macro | undefined> {
+    const macro = getMacro(id, lang)
+    if (!macro) return
     return {
-      id: db[0].macroId,
-      name: db[0]['Command'],
-      description: db[0]['Description'],
+      id,
+      name: macro.Command,
+      description: macro.Description,
     }
   }
 
-  async search(name: string, lang: Locale): Promise<Macro | undefined> {
-    if (!this.macros) {
-      this.macros = await this.getNames()
-    }
-
-    const predict = closest(name, this.macros.map((macro) => macro.names).flat())
-
-    if (!predict) {
-      return
-    }
-
-    const exactly = predict === name || predict.substring(1) === name
-
-    const id = this.macros.find(({ names }) => names.includes(predict))?.id
-
-    if (!id) {
-      return
-    }
-
-    const macro = await this.get(id, lang)
-
-    if (!macro) {
-      return
-    }
-
+  async search(name: string, lang: Locale, threshold: number): Promise<Macro | undefined> {
+    if (!name.startsWith('/')) name = `/${name}`
+    const macro = searchMacro(name, lang, threshold)
+    if (!macro) return
     return {
-      ...macro,
-      exactly,
+      id: macro.ID,
+      name: macro.Command,
+      description: macro.Description,
+      exactly: [macro.Command, macro.Alias, macro.ShortAlias, macro.ShortCommand].includes(name),
     }
   }
 
-  async render(macro: { name: string; description: string }, about: string): Promise<string> {
+  async render(macro: Macro, info: { about: string; copyright: string }, lang: string): Promise<Element> {
     const { puppeteer } = this.ctx
 
     if (!puppeteer) {
@@ -119,27 +56,99 @@ export class Search extends Service {
 
     const page = await puppeteer.page()
 
-    await page.goto(`file:///${path.resolve(__dirname, '../view/macro.html')}`)
+    const { about, copyright } = info
 
-    await page.evaluate(
-      (name: string, description: string, about: string): void => {
-        let el = document.getElementById('macro-name')
-        if (el) {
-          el.innerText = name
-        }
-        el = document.getElementById('macro-description')
-        if (el) {
-          el.innerHTML = description
-        }
-        el = document.getElementById('about')
-        if (el) {
-          el.innerHTML = about
-        }
-      },
-      name,
-      descriptionHtml,
-      about,
-    )
+    await page.setContent(`
+<!DOCTYPE html>
+<html lang=${lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+    body {
+      margin: 0;
+      padding: 0;
+      width: 800px;
+      font-size: 16px;
+      font-family: Consolas, 'Courier New', monospace;
+    }
+    [lang="zh"] body {
+      font-family: 'Microsoft Yahei UI', SimHei, Consolas, 'Courier New', monospace;
+    }
+    [lang="ja"] body {
+      font-family: 'Yu Gothic', 'Yu Gothic UI', 'Meiryo UI', 'Meiryo', 'MS Gothic', Consolas, 'Courier New', monospace;
+    }
+    [lang="ko"] body {
+      font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', 'Nanum Gothic', Consolas, 'Courier New', monospace;
+    }
+    
+    code {
+      color: orange;
+      border: 2px solid #30363d;
+      margin: 0px 7px;
+      margin-right: 0;
+      padding: 5px;
+      border-radius: 5px;
+      background-color: #3e3e3e;
+    }
+    
+    kbd {
+      display: inline-block;
+      padding: 3px 5px;
+      line-height: 10px;
+      color: rgb(201, 209, 217);
+      vertical-align: middle;
+      background-color: rgb(22, 27, 34);
+      border: solid 1px rgb(110, 118, 129, 0);
+      border-radius: 6px;
+      box-shadow: inset 0 -1px 0 rgb(110, 118, 129, 0);
+    }
+    
+    #container {
+      margin: 0px;
+      padding: 10px 30px;
+      background-color: #333333;
+      color: white;
+    }
+    
+    span.highlight {
+      color: #b2b23e;
+    }
+
+    footer {
+      padding: 10px 30px;
+      padding-bottom: 0;
+    }
+    footer > div {
+      display: flex;
+      justify-content: space-between;
+    }
+    footer > div #about {
+      text-align: right;
+      line-height: 0.8em;
+    }    
+    </style>
+    <title>Macro</title>
+  </head>
+  <body>
+    <main id="container">
+      <div>
+        <h1 id="macro-name">${name}</h1>
+        <hr />
+      </div>
+      <div id="macro-description">${descriptionHtml}</div>
+    </main>
+    <footer>
+      <div>
+        <div id="copyright">${copyright}</div>
+        <div id="about">${about}</div>
+      </div>
+      <p>
+        FINAL FANTASY XIV © 2010 - 2023 SQUARE ENIX CO., LTD. All Rights Reserved.
+      </p>
+    </footer>
+  </body>
+</html>
+    `)
 
     // set the viewport to the same size as the page
     const width = await page.evaluate(() => {
@@ -152,13 +161,13 @@ export class Search extends Service {
     })
 
     // take a screenshot
-    const screenshot = await page.screenshot({
+    const screenshot = (await page.screenshot({
       fullPage: true,
       type: 'png',
-    })
+    })) as Buffer
 
     // don't forget to close the page
     await page.close()
-    return segment.image(screenshot)
+    return h.image(screenshot, 'image/png')
   }
 }
