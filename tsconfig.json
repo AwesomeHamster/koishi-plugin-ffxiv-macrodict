@@ -2,7 +2,8 @@
   "extends": "@hamster-bot/tsconfig",
   "compilerOptions": {
     "outDir": "dist",
-    "types": ["mocha"]
+    "types": ["mocha"],
+    "strictNullChecks": false,
   },
   "include": ["src/**/*.ts"]
 }
