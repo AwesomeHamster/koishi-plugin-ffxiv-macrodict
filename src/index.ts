@@ -52,7 +52,7 @@ export async function apply(ctx: Context, config: Config): Promise<void> {
       const db = await ctx.macrodict.search(macro, lang, config.threshold)
 
       if (!db) {
-        return session?.text('.not_found_macro')
+        return session?.text('.not_found_macro', [macro])
       }
 
       if (!db.exactly) {
