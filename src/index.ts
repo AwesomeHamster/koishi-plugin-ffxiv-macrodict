@@ -11,7 +11,7 @@ export { Config }
 export const name = 'macrodict'
 
 // only allow when database available
-export const using = ['database'] as const
+export const using = ['database']
 
 export async function apply(ctx: Context, config: Config): Promise<void> {
   ctx.model.extend('channel', {
