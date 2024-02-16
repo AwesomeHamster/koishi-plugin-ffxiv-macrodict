@@ -8,6 +8,5 @@ export default defineConfig({
   clean: true,
   outDir: 'lib',
   esbuildPlugins: [yaml.yamlPlugin()],
-  esbuildOptions(options, context) {
-  },
+  esbuildOptions(options, context) {},
 })
