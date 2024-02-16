@@ -1,4 +1,4 @@
-import { Context } from 'koishi'
+import { Context, h } from 'koishi'
 
 import { Config } from './config'
 import i18n from './i18n'
@@ -11,7 +11,7 @@ export { Config }
 export const name = 'macrodict'
 
 // only allow when database available
-export const using = ['database'] as const
+export const using = ['database']
 
 export async function apply(ctx: Context, config: Config): Promise<void> {
   ctx.model.extend('channel', {
@@ -28,7 +28,22 @@ export async function apply(ctx: Context, config: Config): Promise<void> {
     .alias(...config.aliases)
     .channelFields(['macrodict'])
     .option('lang', '-l <language:string>')
+    .option('imageMode', '-i')
+    .option('textMode', '-t')
     .action(async ({ session, options }, macro) => {
+      const puppeteer = ctx.get('puppeteer')
+      if (puppeteer && session?.channel?.macrodict) {
+        if (options?.imageMode) {
+          session.channel.macrodict.mode = 'auto'
+          return session?.text('.setting.image_mode')
+        } else if (options?.textMode) {
+          session.channel.macrodict.mode = 'text'
+          return session?.text('.setting.text_mode')
+        }
+      }
+      if (!macro?.trim?.()) {
+        return h('message', [h('p', h.text(session?.text('.no_macro'))), h('br'), h('execute', 'help macrodict')])
+      }
       let lang = (options?.lang as Locale) ?? config.defaultLanguage
       if (!lang || !locales.includes(lang)) {
         session?.sendQueued(session.text('.wrong_language', [lang, config.defaultLanguage]))
@@ -59,24 +74,4 @@ export async function apply(ctx: Context, config: Config): Promise<void> {
         lang,
       )
     })
-
-  ctx.using(['puppeteer'], (ctx) => {
-    ctx
-      .command('macrodict', { patch: true })
-      .channelFields(['macrodict'])
-      .option('imageMode', '-i')
-      .option('textMode', '-t')
-      .action(({ next, options, session }) => {
-        if (session?.channel?.macrodict) {
-          if (options?.imageMode) {
-            session.channel.macrodict.mode = 'auto'
-            return session?.text('.setting.image_mode')
-          } else if (options?.textMode) {
-            session.channel.macrodict.mode = 'text'
-            return session?.text('.setting.text_mode')
-          }
-        }
-        return next?.()
-      }, true)
-  })
 }

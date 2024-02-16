@@ -12,6 +12,7 @@ commands:
       textMode: 输出为文本模式
 
     messages:
+      no_macro: 错误：使用指令时应当传递宏名称。
       wrong_language: '不存在语言 {0}，将采用默认语言 {1} 进行搜索。'
       not_found_puppeteer: '未找到 koishi-plugin-puppeteer 插件，无法渲染宏指令。'
       not_found_macro: '找不到宏指令。'
