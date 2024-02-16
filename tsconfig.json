@@ -1,7 +1,8 @@
 {
-  "extends": "@hamster-bot/constructeur/tsconfig.base.json",
+  "extends": "@hamster-bot/tsconfig",
   "compilerOptions": {
-    "outDir": "dist"
+    "outDir": "dist",
+    "types": ["mocha"]
   },
   "include": ["src/**/*.ts"]
 }

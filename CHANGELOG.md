@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.0] - 2023-01-05
+
+### Added
+
+- better CJK fonts ([#40](https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/pull/40))
+
+### Fixed
+
+- broken condition in exactly match searching ([#28](https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/pull/28))
+- segment type changed in koishi 4.9 ([#32](https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/pull/32))
+
+### Changed
+
+- migrate to use [ffxiv-textcommand-data](https://www.npmjs.com/package/ffxiv-textcommand-data) ([#39](https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/pull/39))
+- compile html page on the fly ([#40](https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/pull/40))
+- upgrade puppeteer to v3.3.1 ([#40](https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/pull/40))
+
 ## [2.0.11] - 2022-09-06
 
 ### Added
@@ -133,7 +150,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - update function causes errors ([#1](https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/pull/1))
 - placeholder reconized as html tag which cause macro content not fully displayed ([223c306](https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/commit/223c30647ea95d9d52cca3133f3a728f88de1315))
 
-[unreleased]: https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/compare/v2.0.11...HEAD
+[unreleased]: https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/compare/v2.1.0...HEAD
+[2.1.0]: https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/compare/v2.0.11...v2.1.0
 [2.0.11]: https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/compare/v2.0.10...v2.0.11
 [2.0.10]: https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/compare/v2.0.9...v2.0.10
 [2.0.9]: https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict/compare/v2.0.8...v2.0.9
