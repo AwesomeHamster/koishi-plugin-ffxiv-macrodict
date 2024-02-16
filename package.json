@@ -96,6 +96,6 @@
     "koishi-plugin-puppeteer": "^3.3.1"
   },
   "dependencies": {
-    "ffxiv-textcommand-data": "^0.1.0"
+    "ffxiv-textcommand-data": "^0.1.1"
   }
 }
