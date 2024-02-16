@@ -81,6 +81,7 @@
     "@typescript-eslint/eslint-plugin": "^5.30.5",
     "@typescript-eslint/parser": "^5.30.5",
     "chai": "^4.3.4",
+    "esbuild-plugin-yaml": "^0.0.1",
     "eslint": "^8.19.0",
     "eslint-import-resolver-typescript": "^3.4.1",
     "markdown-magic": "^2.6.1",
