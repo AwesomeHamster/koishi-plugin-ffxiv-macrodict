@@ -1,13 +1,15 @@
 commands:
   macrodict:
-    description: Macro Dictionary
+    description: Text Command Dictionary
 
     example: |
-      macrodict action         show the description of the macro "action"
-      macrodict -l ja hotbar   show the description of the macro "hotbar" in Japanese
+      macrodict action         show the description of the text command "action"
+      macrodict -l ja hotbar   show the description of the text command "hotbar" in Japanese
 
     options:
-      lang: Specify the language of the output.
+      lang: Specify Output Language.
+      imageMode: Set Output as Image.
+      textMode: Set Output as Text.
 
     messages:
       no_macro: 'Error: Please enter the command with macro.'
@@ -31,7 +33,6 @@ commands:
         {description}
         -----
         {about}
-
-    setting:
-      image_mode: 'Switched to image mode'
-      text_mode: 'Switched to text mode'
+      setting:
+        image_mode: 'Switched to Image Mode'
+        text_mode: 'Switched to Text Mode'
