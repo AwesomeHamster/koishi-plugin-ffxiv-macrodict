@@ -44,7 +44,7 @@ export class Search extends Service {
     }
   }
 
-  async render(macro: { name: string; description: string }, about: string, lang: string): Promise<Element> {
+  async render(macro: Macro, info: { about: string; copyright: string }, lang: string): Promise<Element> {
     const { puppeteer } = this.ctx
 
     if (!puppeteer) {
@@ -55,6 +55,8 @@ export class Search extends Service {
     const descriptionHtml = parseMacroDescription(description)
 
     const page = await puppeteer.page()
+
+    const { about, copyright } = info
 
     await page.setContent(`
 <!DOCTYPE html>
@@ -111,10 +113,17 @@ export class Search extends Service {
     span.highlight {
       color: #b2b23e;
     }
-    
+
     footer {
+      padding: 10px 30px;
+      padding-bottom: 0;
+    }
+    footer > div {
+      display: flex;
+      justify-content: space-between;
+    }
+    footer > div #about {
       text-align: right;
-      padding-right: 30px;
       line-height: 0.8em;
     }    
     </style>
@@ -129,7 +138,13 @@ export class Search extends Service {
       <div id="macro-description">${descriptionHtml}</div>
     </main>
     <footer>
-      <div id="about">${about}</div>
+      <div>
+        <div id="copyright">${copyright}</div>
+        <div id="about">${about}</div>
+      </div>
+      <p>
+        FINAL FANTASY XIV © 2010 - 2023 SQUARE ENIX CO., LTD. All Rights Reserved.
+      </p>
     </footer>
   </body>
 </html>

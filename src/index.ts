@@ -65,8 +65,13 @@ export async function apply(ctx: Context, config: Config): Promise<void> {
           name: db.name,
           description: parseMacroDescription(db.description, 'text'),
           about: session?.text('.about'),
+          copyright: session?.text('.copyright'),
         })
       }
-      return await ctx.macrodict.render(db, session?.text('.about_html') ?? '', lang)
+      return await ctx.macrodict.render(
+        db,
+        { about: session?.text('.about_html') ?? '', copyright: session?.text('.copyright_html') ?? '' },
+        lang,
+      )
     })
 }
