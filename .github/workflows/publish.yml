@@ -15,5 +15,6 @@ jobs:
       lint: true
       test: true
       yarn-no-immutable: true
-      npm-token: ${{ secrets.NPM_TOKEN }}
       test-before-publish: true
+    secrets:
+      npm-token: ${{ secrets.NPM_TOKEN }}
