@@ -11,6 +11,8 @@ on:
 jobs:
   build:
     uses: AwesomeHamster/workflows/.github/workflows/build.yml@master
+    env:
+      YARN_ENABLE_IMMUTABLE_INSTALLS: false
     with:
       lint: true
       test: true
