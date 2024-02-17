@@ -7,7 +7,12 @@ on:
 jobs:
   build:
     uses: AwesomeHamster/workflows/.github/workflows/build.yml@master
+    permissions:
+      pull-requests: write
+      issues: write
     with:
       lint: true
       test: true
       yarn-no-immutable: true
+      approve: true
+    secrets: inherit
