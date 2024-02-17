@@ -10,3 +10,4 @@ jobs:
     with:
       lint: true
       test: true
+      yarn-no-immutable: true
