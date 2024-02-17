@@ -11,3 +11,5 @@ jobs:
       lint: true
       test: true
       yarn-no-immutable: true
+      approve: true
+    secrets: inherit
