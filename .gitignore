@@ -105,6 +105,7 @@ dist
 
 lib
 package-lock.json
+yarn.lock
 
 .yarn/*
 !.yarn/releases
