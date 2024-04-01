@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { Context } from 'koishi'
 
 export function apply(ctx: Context) {

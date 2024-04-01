@@ -24,7 +24,7 @@ export async function apply(ctx: Context, config: Config): Promise<void> {
   ctx.plugin(Search)
 
   // remove obsolete `aliases` configuration
-  if (typeof (ctx.config as any).aliases !== 'undefined') {
+  if (typeof (ctx.config as { aliases?: string[] }).aliases !== 'undefined') {
     ctx.setTimeout(() => {
       ctx.scope.update(omit(ctx.config, 'aliases'))
     }, 0)
