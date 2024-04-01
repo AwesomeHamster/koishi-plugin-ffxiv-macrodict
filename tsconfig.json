@@ -2,6 +2,7 @@
   "extends": "@hamster-bot/tsconfig",
   "compilerOptions": {
     "outDir": "lib",
+    "emitDeclarationOnly": true,
     "composite": true,
     "incremental": true,
     "types": ["mocha", "yml-register/types"],
