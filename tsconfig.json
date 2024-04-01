@@ -6,7 +6,7 @@
     "incremental": true,
     "types": ["mocha", "yml-register/types"],
     "jsx": "react-jsx",
-    "jsxImportSource": "@satorijs/element",
+    "jsxImportSource": "@satorijs/element"
   },
   "include": ["src/**/*.ts", "src/*.tsx"]
 }
