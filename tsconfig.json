@@ -8,5 +8,5 @@
     "jsx": "react-jsx",
     "jsxImportSource": "@satorijs/element"
   },
-  "include": ["src/**/*.ts", "src/*.tsx"]
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
 }
