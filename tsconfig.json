@@ -1,8 +1,12 @@
 {
   "extends": "@hamster-bot/tsconfig",
   "compilerOptions": {
-    "outDir": "dist",
-    "types": ["mocha"]
+    "outDir": "lib",
+    "composite": true,
+    "incremental": true,
+    "types": ["mocha", "yml-register/types"],
+    "jsx": "react-jsx",
+    "jsxImportSource": "@satorijs/element",
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts", "src/*.tsx"]
 }

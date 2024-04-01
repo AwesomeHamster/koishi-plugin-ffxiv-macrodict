@@ -1,5 +1,7 @@
 import { Schema } from 'koishi'
 
+import enUS from './locales/en-US.schema.yml'
+import zhCN from './locales/zh-CN.schema.yml'
 import { Locale, locales } from './utils'
 
 export interface Config {
@@ -15,7 +17,8 @@ export const Config: Schema<Config> = Schema.object({
     .default('auto'),
   threshold: Schema.number().default(3),
 }).i18n({
-  'zh': require('./locales/zh-CN/macrodict.schema.yml'),
-  'zh-CN': require('./locales/zh-CN/macrodict.schema.yml'),
-  'en': require('./locales/en-US/macrodict.schema.yml'),
+  'zh': zhCN,
+  'zh-CN': zhCN,
+  'en': enUS,
+  'en-US': enUS,
 })
