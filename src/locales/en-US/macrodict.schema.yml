@@ -1,0 +1,15 @@
+defaultLanguage:
+  $description: Default output language, can be overridden by the -l option
+  $value:
+    - English
+    - German
+    - French
+    - Japanese
+    - Korean
+    - Simplified Chinese
+defaultMode:
+  $description: Default output mode
+  $value:
+    - Prefer to output image
+    - Always output text
+threshold: Distance threshold for fuzzy search text commands

@@ -1,7 +1,7 @@
-import { Context, h } from 'koishi'
+import { Context, h, omit } from 'koishi'
 
 import { Config } from './config'
-import i18n from './i18n'
+import * as i18n from './locales'
 import { parseMacroDescription } from './parser'
 import { Search } from './search'
 import { Locale, locales } from './utils'
@@ -19,13 +19,19 @@ export async function apply(ctx: Context, config: Config): Promise<void> {
   })
 
   // register i18n resources
-  Object.entries(i18n).forEach(([key, value]) => ctx.i18n.define(key, value))
+  ctx.plugin(i18n)
 
   ctx.plugin(Search)
 
+  // remove obsolete `aliases` configuration
+  if (typeof (ctx.config as any).aliases !== 'undefined') {
+    ctx.setTimeout(() => {
+      ctx.scope.update(omit(ctx.config, 'aliases'))
+    }, 0)
+  }
+
   ctx
     .command('macrodict <macro>')
-    .alias(...config.aliases)
     .channelFields(['macrodict'])
     .option('lang', '-l <language:string>')
     .option('imageMode', '-i')
