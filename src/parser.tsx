@@ -14,19 +14,19 @@ const keyMap: { [k: string]: string } = {
 /**
  * Parse a macro definition text.
  */
-export function parseMacroDescription(description: string, format: 'html' | 'text' = 'html'): string {
+export function parseMacroDescription(description: string, format: 'html' | 'text' = 'html') {
   const renderer = new Renderer(format)
   let index = 0
-  let result = ''
+  const result: (JSX.IntrinsicElements | string)[] = []
   while (index < description.length) {
     const sub = description.substring(index)
     if (/^\ue070/.test(sub)) {
       // A weird character in Japanese macro description
-      result += '→'
+      result.push('→')
       index += 1
     } else if (/^<Indent\/>/.test(sub)) {
       // The soft indent(?) in French / German macro description
-      result += ' '
+      result.push(' ')
       index += 9
     } else if (/^<SoftHyphen\/>/.test(sub)) {
       // remove soft hyphen that is used in deutschen makro
@@ -43,7 +43,7 @@ export function parseMacroDescription(description: string, format: 'html' | 'tex
       if (!m) {
         throw new Error('parse error')
       }
-      result += renderer.span(m[1], 'highlight')
+      result.push(renderer.span(m[1], 'highlight'))
       index += m[0].length
     } else if (/^<Gui\((\d+)\)\/>/.test(sub)) {
       // replace <Gui(x)/> to corresponding keys
@@ -51,20 +51,20 @@ export function parseMacroDescription(description: string, format: 'html' | 'tex
       if (!m) {
         throw new Error('parse error')
       }
-      result += renderer.kbd(keyMap[m[1]] || m[1])
+      result.push(renderer.kbd(keyMap[m[1]] || m[1]))
       index += m[0].length
     } else if (/^<(\w+)>/.test(sub)) {
       const m = /^<(\w+)>/.exec(sub)
       if (!m) {
         throw new Error('parse error')
       }
-      result += `&lt;${m[1]}&gt;`
+      result.push(`&lt;${m[1]}&gt;`)
       index += m[0].length
     } else if (/^\n/.test(sub)) {
-      result += renderer.br()
+      result.push(renderer.br())
       index += 1
     } else {
-      result += description[index]
+      result.push(description[index])
       index += 1
     }
   }
@@ -79,19 +79,19 @@ class Renderer {
     this.html = format === 'html'
   }
 
-  p(text: string, className?: string): string {
-    return this.html ? `<p${className ? ` class="${className}"` : ''}>${text}</p>` : `${text}\n`
+  p(text: string, className = '') {
+    return this.html ? <p className={className}>{text}</p> : `${text}\n`
   }
 
-  span(text: string, className?: string): string {
-    return this.html ? `<span${className ? ` class="${className}"` : ''}>${text}</span>` : ` ${text} `
+  span(text: string, className = '') {
+    return this.html ? <span className={className}>{text}</span> : ` ${text} `
   }
 
-  kbd(text: string, className?: string): string {
-    return this.html ? `<kbd${className ? ` class="${className}"` : ''}>${text}</kbd>` : `[${text}]`
+  kbd(text: string, className = '') {
+    return this.html ? <kbd className={className}>{text}</kbd> : `[${text}]`
   }
 
-  br(): string {
-    return this.html ? '<br>' : '\n'
+  br() {
+    return this.html ? <br /> : '\n'
   }
 }

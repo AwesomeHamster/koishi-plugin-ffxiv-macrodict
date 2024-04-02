@@ -1,6 +1,6 @@
 import type {} from 'koishi-plugin-puppeteer'
 import { get as getMacro, search as searchMacro, nameToIdMap } from 'ffxiv-textcommand-data'
-import { Context, Element, h, Service } from 'koishi'
+import { Context, Element, Service } from 'koishi'
 
 import { parseMacroDescription } from './parser'
 import { Locale } from './utils'
@@ -45,25 +45,14 @@ export class Search extends Service {
   }
 
   async render(macro: Macro, info: { about: string; copyright: string }, lang: string): Promise<Element> {
-    const { puppeteer } = this.ctx
-
-    if (!puppeteer) {
-      throw new Error('Not found puppeteer.')
-    }
-
     const { name, description } = macro
     const descriptionHtml = parseMacroDescription(description)
 
-    const page = await puppeteer.page()
-
     const { about, copyright } = info
 
-    await page.setContent(`
-<!DOCTYPE html>
-<html lang=${lang}>
-  <head>
-    <meta charset="UTF-8" />
-    <style>
+    return (
+      <html lang={lang}>
+        <style>{`
     body {
       margin: 0;
       padding: 0;
@@ -125,49 +114,22 @@ export class Search extends Service {
     footer > div #about {
       text-align: right;
       line-height: 0.8em;
-    }    
-    </style>
-    <title>Macro</title>
-  </head>
-  <body>
-    <main id="container">
-      <div>
-        <h1 id="macro-name">${name}</h1>
-        <hr />
-      </div>
-      <div id="macro-description">${descriptionHtml}</div>
-    </main>
-    <footer>
-      <div>
-        <div id="copyright">${copyright}</div>
-        <div id="about">${about}</div>
-      </div>
-      <p>
-        FINAL FANTASY XIV © 2010 - 2023 SQUARE ENIX CO., LTD. All Rights Reserved.
-      </p>
-    </footer>
-  </body>
-</html>
-    `)
-
-    // set the viewport to the same size as the page
-    const width = await page.evaluate(() => {
-      const ele = document.body
-      return ele.scrollWidth
-    })
-    await page.setViewport({
-      width,
-      height: 200,
-    })
-
-    // take a screenshot
-    const screenshot = (await page.screenshot({
-      fullPage: true,
-      type: 'png',
-    })) as Buffer
-
-    // don't forget to close the page
-    await page.close()
-    return h.image(screenshot, 'image/png')
+    }`}</style>
+        <main id='container'>
+          <div>
+            <h1 id='macro-name'>{name}</h1>
+            <hr />
+          </div>
+          <div id='macro-description'>{descriptionHtml}</div>
+        </main>
+        <footer>
+          <div>
+            <div id='copyright'>{copyright}</div>
+            <div id='about'>{about}</div>
+          </div>
+          <p>FINAL FANTASY XIV © 2010 - 2023 SQUARE ENIX CO., LTD. All Rights Reserved.</p>
+        </footer>
+      </html>
+    )
   }
 }
