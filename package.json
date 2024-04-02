@@ -22,6 +22,7 @@
   "exports": {
     ".": {
       "types": "./lib/index.d.ts",
+      "require": "./lib/index.js",
       "default": "./lib/index.js"
     },
     "./package.json": "./package.json"
@@ -41,7 +42,7 @@
     "url": "git+https://github.com/AwesomeHamster/koishi-plugin-ffxiv-macrodict.git"
   },
   "scripts": {
-    "build": "yakumo build",
+    "build": "atsc",
     "test": "mocha -r tsx -r yml-register --extension .spec.ts ./__tests__",
     "lint": "eslint src/**/*.ts && yarn prettier --check",
     "format": "yarn prettier --write",
@@ -86,6 +87,7 @@
     "@types/pug": "^2.0.6",
     "@typescript-eslint/eslint-plugin": "^7.3.1",
     "@typescript-eslint/parser": "^7.3.1",
+    "atsc": "^2.0.1",
     "chai": "^4.3.4",
     "esbuild-plugin-yaml": "^0.0.1",
     "eslint": "^8.57.0",
@@ -102,10 +104,6 @@
     "tsup": "^8.0.1",
     "tsx": "^4.7.1",
     "typescript": "^5.3.3",
-    "yakumo": "^1.0.0-beta.8",
-    "yakumo-esbuild": "^1.0.0-beta.4",
-    "yakumo-mocha": "^1.0.0-beta.2",
-    "yakumo-tsc": "^1.0.0-beta.3",
     "yml-register": "^1.2.5"
   },
   "peerDependencies": {

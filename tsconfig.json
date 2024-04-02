@@ -1,8 +1,9 @@
 {
-  "extends": "@hamster-bot/tsconfig",
+  "extends": "@hamster-bot/tsconfig/tsconfig.base.json",
   "compilerOptions": {
+    "rootDir": "src",
     "outDir": "lib",
-    "emitDeclarationOnly": true,
+    "declaration": true,
     "composite": true,
     "incremental": true,
     "types": ["mocha", "yml-register/types"],
