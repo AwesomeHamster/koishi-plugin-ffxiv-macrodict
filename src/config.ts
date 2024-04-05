@@ -15,7 +15,8 @@ export const Config: Schema<Config> = Schema.object({
     .default('auto'),
   threshold: Schema.number().default(3),
 }).i18n({
-  'zh': require('./locales/zh-CN/macrodict.schema.yml'),
-  'zh-CN': require('./locales/zh-CN/macrodict.schema.yml'),
-  'en': require('./locales/en-US/macrodict.schema.yml'),
+  'en': require('./locales/en-US.schema.yml'),
+  'en-US': require('./locales/en-US.schema.yml'),
+  'zh': require('./locales/zh-CN.schema.yml'),
+  'zh-CN': require('./locales/zh-CN.schema.yml'),
 })
