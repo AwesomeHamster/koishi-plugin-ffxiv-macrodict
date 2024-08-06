@@ -2,7 +2,7 @@ commands:
   macrodict:
     description: Text Command Dictionary
 
-    example: |
+    examples: |
       macrodict action         show the description of the text command "action"
       macrodict -l ja hotbar   show the description of the text command "hotbar" in Japanese
 

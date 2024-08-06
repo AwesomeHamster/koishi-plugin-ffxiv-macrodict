@@ -2,7 +2,7 @@ commands:
   macrodict:
     description: 宏学词典
 
-    example: |
+    examples: |
       macrodict action         输出 action 宏指令的介绍
       macrodict -l ja hotbar   输出 hotbar 宏指令的日语介绍
 
